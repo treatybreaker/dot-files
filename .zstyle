@@ -1,0 +1,65 @@
+#!/bin/zsh
+
+# Enable Caching
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${HOME}/zsh/.zcompcache"
+
+### Fzf Tab Configuration ###
+
+# Tab completion for CD/directory navigation
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -al --no-filesize --no-time --no-user --no-permissions $realpath'
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# Tab Completion for Kill
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview \
+  '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
+
+# Tab completion for Systemd unit status
+
+if $(which systemctl) 2>/dev/null; then
+    zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+fi
+# Mac does not have systemctl :pensive:
+
+# Tab Completion for environment variables
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
+	fzf-preview 'echo ${(P)word}'
+
+# Tab Completion for previewing files or directories, SHOULD BE AT THE VERY BOTTOM
+zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu):*' fzf-preview \
+  '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
+
+### Generic Oh My Zsh Styles ###
+
+# Highlight the current autocomplete option
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# Better SSH/Rsync/SCP Autocomplete
+zstyle ':completion:*:ssh:*' config on
+
+# Allow for autocomplete to be case insensitive
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+  '+l:|?=** r:|?=**'
+
+
+# Better SSH completions
+h=()
+if [[ -r ~/.ssh/config ]]; then
+  h+=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+fi
+
+if [[ -r ~/.ssh/known_hosts ]]; then
+  h+=(${${$(cat ~/.ssh/known_hosts | awk '{print $1}')/]:*/}/\[/}) 2>/dev/null
+fi
+
+if [[ $#h -gt 0 ]]; then
+  zstyle ':completion:*:ssh:*' hosts $h
+  zstyle ':completion:*:scp:*' hosts $h
+  zstyle ':completion:*:rsync:*' hosts $h
+  zstyle ':completion:*:slogin:*' hosts $h
+fi
+
