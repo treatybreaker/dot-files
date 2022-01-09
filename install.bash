@@ -391,11 +391,13 @@ main() {
     local dot_files_temp
     dot_files_temp="dot-files-$(date "+%s")"
 
-    log "info" "Installing $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_temp}")"
+    log "info" "Cloning $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_temp}")"
 
     mkdir -p "${OLD_DOT_FILES_BACKUP}"
 
     git clone --recurse-submodules "${GIT_REPOSITORY}" "${dot_files_temp}" && cd "${dot_files_temp}"
+
+    log "info" "Installing $(important "dot files")"
 
     local dot_base
     local dot_home
