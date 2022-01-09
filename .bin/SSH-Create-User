@@ -1,0 +1,429 @@
+#!/bin/bash
+
+echo_rgb() {
+  # Echo a colored string to the terminal based on rgb values
+  #
+  # Positional Arguments:
+  #
+  #   message <type: string> <position: 1> <required: true>
+  #     - The message to be printed to stdout
+  #   red <type: int> <position: 2> <required: true>
+  #     - The red value from 0 to 255
+  #   green <type: int> <position: 3> <required: true>
+  #     - The green value from 0 to 255
+  #   blue <type: int> <position: 4> <required: true>
+  #     - The blue value from 0 to 255
+  #
+  # Usage:
+  #   echo_rgb "Yep" 10 8 30
+  #
+  # POSIX Compliant:
+  #   N/A
+  #
+
+  local red
+  local green
+  local blue
+  local input
+
+  input="${1}"
+  red="${2}"
+  green="${3}"
+  blue="${4}"
+
+  printf "\e[0;38;2;%s;%s;%sm%s\e[m\n" "${red}" "${green}" "${blue}" "${input}"
+}
+
+log() {
+  # Print a message and send it to stdout or stderr depending upon log level, also configurable with debug etc.
+  #
+  # Arguments:
+  #   level <type: string> <position: 1> <required: true>
+  #     - The log level, defined within a case check in this function
+  #   message <type: string> <position: 2> <required: true>
+  #     - The info message
+  #   line_number <type: int> <position: 3> <required: false>
+  #     - The line number of the calling function (${LINNO})
+  #
+  # Usage:
+  #   log "info" "Could not find that directory"
+  #
+  # POSIX Compliant:
+  #   Yes
+  #
+
+  # Set debug status depending if a global debug variable has been set to either 1 or 0
+  local debug
+  if [ ${DEBUG} ]; then
+    debug=${DEBUG}
+  else
+    debug=0
+  fi
+
+  local FORMAT
+  FORMAT="[$(echo_rgb "$(date +%Y-%m-%dT%H:%M:%S)" 180 140 255)]"
+
+  # Convert the level to uppercase
+  local level
+  level=$(echo "${1}" | tr '[:lower:]' '[:upper:]')
+
+  local message
+  message="${2}"
+
+  case "${level}" in
+  INFO)
+    # Output all info log levels to stdout
+    printf "${FORMAT}[$(echo_rgb "INFO" 0 140 255)] %s\n" "${message}" >&1
+    return 0
+    ;;
+  WARN | WARNING)
+    # Output all info log levels to stdout
+    printf "${FORMAT}[$(echo_rgb "WARNING" 255 255 0)] %s\n" "${message}" >&1
+    return 0
+    ;;
+  DEBUG)
+    [[ ${debug} == 0 ]] && return
+    printf "${FORMAT}[$(echo_rgb "DEBUG" 0 160 110)] %s\n" "${message}" >&1
+    return 0
+    ;;
+  ERROR)
+    # Output all error log levels to stderr
+    printf "${FORMAT}[$(echo_rgb "ERROR" 255 0 0)] %s\n" "${message}" >&2
+    return 0
+    ;;
+  # Further log levels can be added by extending this switch statement with more comparisons
+
+  *) # Default case, no matches
+    # Returns non-zero code as an improper log option was passed, this helps with using `set -e`
+    printf "${FORMAT}[ERROR] %s\n" "Invalid log level passed, received level \"${level}\" with message \"${message}\"" >&2
+    return 1
+    ;;
+  esac
+}
+
+
+arg_required() {
+  echo_rgb "${1}" 255 183 0
+}
+
+arg_optional(){
+  echo_rgb "${1}" 117 255 255
+}
+
+arg_description(){
+  echo_rgb "${@}" 220 190 255
+}
+
+usage() {
+  # Print out usage instructions for the local script
+  #
+  # Arguments:
+  #   None
+  #
+  # Usage:
+  #   usage
+  #
+  # POSIX Compliant:
+  #   Yes
+  #
+  printf "$(echo_rgb "Usage:" 50 220 50) %s\n" \
+"$(echo_rgb "$(basename ${0})" 180 255 180) $(arg_required "-U") <user: string> $(arg_required "-H") <hostName: string> $(arg_optional "[OPTIONS]")
+  $(arg_required "REQUIRED")
+  $(arg_optional "OPTIONAL")
+
+  $(arg_required "-U") <user: string> | $(arg_required "--user") <user: string>
+    $(arg_description \
+    "Takes in a username that is to be created on the remote host
+
+    Example:
+      --user User1")
+
+  $(arg_required "-H") <hostName: string> | $(arg_required "--host-name") <hostName: string>
+    $(arg_description \
+    "The SSH hostname for the given host, MUST exist within your ssh configuration; typically located at ~/.ssh/config
+
+    Example:
+      --host-name gitlab.orion-technologies.io")
+
+  $(arg_optional "-L") <loginUser: string> | $(arg_optional "--login-user") <loginUser: string>
+    $(arg_description \
+    "The user used to login to your host, must be a privileged sudo user. Default user is root.
+
+    Example:
+      --login-user Admin")
+
+  $(arg_optional "-K") <keyType: string> | $(arg_optional "--key-type") <keyType: string>
+    $(arg_description \
+    "The SSH key type to generate, passed to ssh-keygen's -t flag.
+
+    Example:
+      --key-type rsa")
+
+  $(arg_optional "-B") <keyBits: int> | $(arg_optional "--bits") <keyBits: int>
+    $(arg_description \
+    "The number of bits used to generate the given key, default is set at 512.
+
+    Example:
+      --bits 2048")
+
+  $(arg_optional "-E") <existingPrivateKey: file> | $(arg_optional "--existing-key") <existingPrivateKey: file>
+    $(arg_description \
+    "An existing private key that will be used to login the remote server. An important note, if the --pub-key option
+    is not passed then this will default to looking for the private key file name concatenated with .pub -- for example:
+    given a private-key file named id_rsa, by default this will look for id_rsa.pub in the same directory; this
+    behavior can be overwritten with the --pub-key option below.
+
+    Example:
+      --existing-key ~/.ssh/id_rsa")
+
+  $(arg_optional "-P") <existingPublicKey: file> | $(arg_optional "--pub-key") <existingPublicKey: file>
+    $(arg_description \
+    "An existing public key that will be sent to the remote server's authorized_hosts file.
+    Depends upon the --existing-key option being passed.
+
+    Example:
+      --public-key ~/.ssh/id_rsa.pub")"
+
+}
+
+ssh_user_to_create=""
+ssh_host_name=""
+ssh_key_type="ed25519"
+ssh_key_bits=512
+ssh_login_user="root"
+existing_ssh_key=""
+existing_pub_key=""
+
+parse_args() {
+  # Parse input arguments
+  #
+  # Arguments:
+  #   Consult the `usage` function
+  #
+  # Usage:
+  #   parse_args "$@"
+  #     - All arguments should be ingested by parse_args first for variable setting
+  #
+  # POSIX Compliant:
+  #   Yes
+  #
+
+  while :; do
+    case ${1} in
+    -h | -\? | --help)
+      usage # Display a usage synopsis.
+      exit
+      ;;
+    --) # End of all options.
+      break
+      ;;
+    -U | --user)
+      ssh_user_to_create="${2}"
+      [[ -z "${ssh_user_to_create}" ]] &&
+        log "error" "No argument provided for ${1}" &&
+        exit 1
+      ;;
+    -E | --existing-key)
+      existing_ssh_key="${2}"
+      [[ ! -f "${existing_ssh_key}" ]] &&
+        log "error" "Given file, ${existing_ssh_key}, does not exist or is not a file!" &&
+        exit 1
+      local first_line
+      first_line="$(head -n 1 "${existing_ssh_key}")"
+
+      # Remove case sensitivity from string matching
+      shopt -s nocasematch
+      if [[ ! "${first_line}" = *"OPENSSH PRIVATE KEY"* ]]; then
+        log "warning" "Given key, ${existing_ssh_key}, could not be determined to be an OpenSSH Private Key!"
+        sleep 5
+      fi
+      shopt -u nocasematch
+      ;;
+    -P | --pub-key)
+      existing_pub_key="${2}"
+      [[ ! -f "${existing_pub_key}" ]] &&
+        log "error" "Given file, ${existing_pub_key}, does not exist or is not a file!" &&
+        exit 1
+      ;;
+    -K | --key-type)
+      ssh_key_type="${2}"
+      [[ -z "${ssh_key_type}" ]] &&
+        log "error" "No argument provided for ${1}" &&
+        exit 1
+      ;;
+    -B | --bits)
+      ssh_key_bits="${2}"
+      [[ -z "${ssh_key_bits}" ]] &&
+        log "error" "No argument provided for ${1}s" &&
+        exit 1
+      [[ ! "${ssh_key_bits}" =~ [0-9] ]] &&
+        log "error" "--bits must be a whole number (int), received ${ssh_key_bits}" &&
+        exit 1
+      ;;
+    -H | --host-name)
+      ssh_host_name="${2}"
+      [[ -z "${ssh_host_name}" ]] &&
+        log "error" "No argument provided for ${1}" &&
+        exit 1
+      ;;
+    -L | --login-user)
+      ssh_login_user="${2}"
+      [[ -z "${ssh_login_user}" ]] &&
+        log "error" "No argument provided for ${1}" &&
+        exit 1
+      ;;
+    -?*)
+      printf 'Unknown option: %s\n' "$1" >&2
+      usage
+      exit 1
+      ;;
+    *) # Default case: No more options, so break out of the loop.
+      break ;;
+    esac
+    shift 2
+  done
+}
+
+### ENTRY POINT ###
+
+parse_args "$@"
+
+### ENTRY POINT ###
+
+
+### NON-BOILERPLATE FUNCTIONS ###
+
+rollback_ssh() {
+  if [[ -z "${existing_ssh_key}" ]]; then
+    log "info" "Deleting generated SSH keypair"
+    rm "${SSH_KEY_FILE}"{,.pub}
+  fi
+  log "info" "Restoring old SSH Config from ${SSH_BACKUP_FILE}"
+  mv "${SSH_BACKUP_FILE}" "${SSH_CONFIG_FILE}"
+}
+
+
+### PRIMARY LOGIC ###
+
+[[ -z "${ssh_user_to_create}" ]] &&
+  log "error" "User may not be empty" &&
+  exit 1
+
+[[ -z "${ssh_host_name}" ]] &&
+  log "error" "--host-name may not be empty" &&
+  exit 1
+
+
+if [[ -z "${existing_ssh_key}" ]]; then
+  log "info" "Existing key not given, generating a new keypair"
+  SSH_KEY_DIRECTORY="${HOME}/.ssh/keys/${ssh_host_name}/"
+
+  log "info" "Creating directory ${SSH_KEY_DIRECTORY} for the ssh key if it doesn't exist"
+  mkdir -p "${SSH_KEY_DIRECTORY}" > /dev/null
+
+  SSH_KEY_FILE="${SSH_KEY_DIRECTORY}/${ssh_user_to_create}-id_${ssh_key_type}"
+
+  [[ -f "${SSH_KEY_FILE}" ]] &&
+    log "error" "${SSH_KEY_FILE} already exists! This may lead to major errors, check your SSH configuration and remove the SSH entry as well as the SSH key file or create a different user if you wish to continue." &&
+    exit 1
+
+  ssh-keygen -t "${ssh_key_type}" -b "${ssh_key_bits}" -N "" -f "${SSH_KEY_FILE}" > /dev/null
+  log "info" "Generated a private key file located at ${SSH_KEY_FILE}"
+else
+  log "info" "An existing SSH key was given, skipping generation of a keypair"
+  SSH_KEY_DIRECTORY="$(dirname "${existing_ssh_key}")"
+  SSH_KEY_FILE="${existing_ssh_key}"
+  log "info" "SSH key given: ${existing_ssh_key}"
+fi
+
+
+if [[ -z "${existing_pub_key}" ]]; then
+  log "info" "A public key was not given, attempting an automatic public key lookup..."
+  [[ ! -f "${SSH_KEY_FILE}.pub" ]] &&
+    log "error" "Unable to find the corresponding public key for ${SSH_KEY_FILE}, should be ${SSH_KEY_FILE}.pub, if you intend to use a different public key pass the --pub-key option" &&
+    exit 1
+  PUB_KEY_CONTENTS="$(cat "${SSH_KEY_FILE}.pub")" || exit 1
+  log "info" "Found a public key: ${SSH_KEY_FILE}.pub"
+else
+  log "info" "A public key was given, using ${existing_pub_key} for public key"
+  PUB_KEY_CONTENTS="$(cat "${existing_pub_key}")" || exit 1
+fi
+
+log "debug" "Pub key contents: ${PUB_KEY_CONTENTS}"
+
+SSH_CONFIG_FILE="${HOME}/.ssh/config"
+log "info" "Generating ssh configuration for ${SSH_CONFIG_FILE}"
+
+SPACE_PADDING="    "
+SSH_LINES_TO_ADD="${SPACE_PADDING}Match user ${ssh_user_to_create} host ${ssh_host_name}
+${SPACE_PADDING}${SPACE_PADDING}IdentityFile ${SSH_KEY_FILE}"
+
+log "info" "Generated new lines for SSH configuration:
+${SSH_LINES_TO_ADD}"
+
+SSH_BACKUP_FILE="${SSH_CONFIG_FILE}.bak.$(date +%Y-%m-%dT%H:%M:%S)"
+log "info" "Backing up ${SSH_CONFIG_FILE} to ${SSH_BACKUP_FILE}"
+cp "${SSH_CONFIG_FILE}" "${SSH_BACKUP_FILE}" > /dev/null
+
+log "info" "Searching for a Host entry for ${ssh_host_name} within ${SSH_CONFIG_FILE}"
+
+# Remove case sensitivity from string matching
+shopt -s nocasematch
+
+wrote_new_data=0
+should_write=0
+while IFS= read -r line; do
+  printf "%s\n" "${line}"
+  if [[ "${line}" = *"HostName ${ssh_host_name}"* ]]; then
+    should_write=1
+  fi
+  if [[ "${should_write}" -eq "1" ]]; then
+    printf "%s\n" "${SSH_LINES_TO_ADD}"
+    wrote_new_data=1
+    should_write=0
+  fi
+done < "${SSH_CONFIG_FILE}" > "ssh_conf.temp" && mv "ssh_conf.temp" "${SSH_CONFIG_FILE}"
+
+shopt -u nocasematch
+
+if [[ "${wrote_new_data}" -eq "1" ]]; then
+  log "info" "Successfully wrote the new SSH configuration, login with ${ssh_user_to_create}@${ssh_host_name}"
+else
+  log "error" "Failed to write to ${SSH_CONFIG_FILE} -- Most likely cause is a missing HostName for ${ssh_host_name}"
+  rollback_ssh
+  exit 1
+fi
+
+
+log "info" "Logging into remote server as ${ssh_login_user}@${ssh_host_name} to create ${ssh_user_to_create} and directories"
+
+log "info" "Verifying that user has sudo permissions"
+ssh "${ssh_login_user}"@"${ssh_host_name}" sudo -v
+
+SSH_RESULT="${?}"
+if [[ "${SSH_RESULT}" -ne "0" ]]; then
+  log "error" "Unable to get sudo through ${ssh_login_user}@${ssh_host_name}, received error code ${SSH_RESULT}"
+  log "error" "Verify the correct user and host name have been provided"
+  rollback_ssh
+  exit "${SSH_RESULT}"
+fi
+
+log "info" "User ${ssh_login_user} has sudo permissions, beginning the creation of user ${ssh_user_to_create} and installing the public key for login"
+
+ssh "${ssh_login_user}"@"${ssh_host_name}" > /dev/null << __EOF__
+sudo useradd ${ssh_user_to_create}
+sudo mkdir -p /home/${ssh_user_to_create}/.ssh
+echo ${PUB_KEY_CONTENTS} | sudo tee -a /home/${ssh_user_to_create}/.ssh/authorized_keys
+sudo chown -R ${ssh_user_to_create}:${ssh_user_to_create} /home/${ssh_user_to_create}/.ssh
+__EOF__
+
+
+SSH_RESULT="${?}"
+if [[ "${SSH_RESULT}" -ne "0" ]]; then
+  log "error" "Second set of SSH commands were unable to execute, ssh returned status code ${SSH_RESULT}"
+  exit "${SSH_RESULT}"
+fi
+
+
+log "info" "Finished, login to remote with ${ssh_user_to_create}@${ssh_host_name}"
+

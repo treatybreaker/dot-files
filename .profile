@@ -17,6 +17,9 @@ if [[ "${OSTYPE}" = "darwn"* ]]; then
     export MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:${MANPATH}"
 fi
 
+### OPTS ###
+setopt extendedglob
+
 ### Environment Variables ###
 
 export LANG=en_US.UTF-8
