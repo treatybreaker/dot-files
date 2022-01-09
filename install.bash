@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit on error
-set -euo pipefail
+set -eo pipefail
 
 ### Information ###
 # This script deploys all dot files and installs all the following dependencies:
