@@ -414,6 +414,9 @@ main() {
         ".."
         "."
         "install.bash"
+        ".git"
+        ".gitignore"
+        ".gitmodules"
     )
     for dot_file in {,.}*; do
         if [[ "${exclusion_dirs[*]}" =~ "${dot_file}" ]]; then
