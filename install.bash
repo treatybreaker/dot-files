@@ -2,10 +2,12 @@
 
 # Exit on error
 set -e
+set -o pipefail
 
 ### Information ###
 # This script deploys all dot files and installs all the following dependencies:
 #   - curl
+#   - python3
 #   - rust
 #   - zsh
 #   - ripgrep
@@ -13,7 +15,7 @@ set -e
 #   - fzf
 #   - exa
 #   - neovim
-#   - powerlevel10k
+#   - autojump
 #
 # Additional dependencies per operating system:
 #   + MacOs (Darwin)
@@ -32,17 +34,14 @@ set -e
 ### CONSTANTS AND GLOBALS ###
 
 SCRIPT_DEPENDENCIES=(
+    zsh
     gcc
     git
+    curl
 )
 
 GIT_REPOSITORY="https://gitlab.orion-technologies.io/philler/dot-files.git"
 PKG_MANAGER="${1}"
-
-PKG_MANAGER_DEPS=(
-    zsh
-    curl
-)
 
 OLD_DOT_FILES_BACKUP="dot-files-backup-$(date "+%s")"
 
@@ -236,6 +235,7 @@ determine_os() {
             else
                 PKG_MANAGER="yum install -y"
             fi
+            SCRIPT_DEPENDENCIES+=(python39.x86_64 python2.x86_64 gcc-c++.x86_64)
             ;;
         *ubuntu*)
             log "info" "Detected distribution as $(important "Ubuntu")"
@@ -250,10 +250,10 @@ determine_os() {
     fi
 }
 
-install_pkg_dependencies() {
+install_dependencies() {
     if [[ -z "${PKG_MANAGER}" ]]; then
         log "info" "No package manager provided at command line, attempting to detect..."
-        determine_os || exit 2
+        determine_os || return 1
     fi
 
     # Failover catch in case something doesn't get put through correctly
@@ -272,15 +272,13 @@ install_pkg_dependencies() {
     ### ZSH Installation ###
 
     # Package Manager Installations, things from the given package manager, e.g. yum
-    local deps
-    deps=("${SCRIPT_DEPENDENCIES[@]}" "${PKG_MANAGER_DEPS[@]}")
 
     local install_str
-    for pkg in "${deps[@]}"; do
+    for pkg in "${SCRIPT_DEPENDENCIES[@]}"; do
         if ! which "${pkg}" >/dev/null 2>&1; then
             log "info" "Installing package dependency $(important "${pkg}")"
 
-            if "${OSTYPE}" = *"darwin"*; then
+            if [[ "${OSTYPE}" = *"darwin"* ]]; then
                 install_str="${PKG_MANAGER} ${pkg}"
             else
                 install_str="sudo ${PKG_MANAGER} ${pkg}"
@@ -309,11 +307,14 @@ install_source_sudo() {
     local program_name
     program_name="$(basename "${program_path}")"
 
+    local install_dir
+    install_dir="${2:-/usr/bin}"
+
     if check_sudo; then
-        log "info" "Sudo access detected, copying $(important "${program_name}") to $(important "/usr/bin/rg")"
-        sudo cp "${program_path}" "/usr/bin"
-        sudo chown "root:root" "/usr/bin/${program_name}"
-        sudo chmod 751 "/usr/bin/${program_name}"
+        log "info" "Sudo access detected, copying $(important "${program_name}") to $(important "${install_dir}/${program_name}")"
+        sudo cp "${program_path}" "${install_dir}"
+        sudo chown "root:root" "/${install_dir}/${program_name}"
+        sudo chmod 751 "/${install_dir}/${program_name}"
     fi
 }
 
@@ -337,8 +338,9 @@ source_installer() {
     install_source_sudo "${cargo_bin}/bat"
 
     log "info" "Installing $(important "fzf") from git"
+    mv "${HOME}/.fzf" "${OLD_DOT_FILES_BACKUP}"
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    eval ~/.fzf.install --all
+    eval ~/.fzf/install --all
 
     log "info" "Installing $(important "exa")"
     cargo install --locked exa
@@ -349,16 +351,26 @@ source_installer() {
         eval "${PKG_MANAGER} neovim"
     else
         local nvim_url
-        nvim_url="https://github.com/neovim/neovim/releases/download/v0.6.1/nvim"
-        curl -L "${nvim_url}" --output nvim
-        chmod u+x nvim
-        install_source_sudo "./nvim"
-        if [[ ! -f "/usr/bin/nvim" ]]; then
+        nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+        curl -LO "${nvim_url}" --output nvim.appimage
+        chmod u+x nvim.appimage
+        mv nvim.appimage nvim
+        install_source_sudo "$(pwd)/nvim" "/usr/local/bin/"
+        if [[ ! -f "/usr/local/bin/nvim" ]]; then
             log "warning" \
             "Could not install nvim to the path as sudo access could not be found\n
                         nvim binary located at $(important "$(pwd)/nvim")"
+        else
+            rm -f nvim
         fi
     fi
+
+    local autojump_temp
+    autojump_temp="autojump-temp-$(date "+%s")"
+    log "info" "Installing $(important "autojump")"
+    git clone https://github.com/wting/autojump.git "${autojump_temp}" && cd "${autojump_temp}"
+    python3 install.py
+    cd .. && rm -rf "${autojump_temp}"
 
     log "info" "Installing $(important "oh-my-zsh")"
     if [[ -d "${HOME}/.oh-my-zsh/" ]]; then
@@ -372,8 +384,9 @@ main() {
     log "info" "Installing dependencies"
     if check_sudo; then
         log "info" "Sudo access found, installing dependencies"
-        if ! install_pkg_dependencies; then
-            log "warning" "Unable to install dependencies -- skipping"
+        if ! install_dependencies; then
+            log "error" "Unable to install dependencies"
+            return 1
         fi
     else
         if ! check_script_dependencies; then
@@ -384,7 +397,7 @@ main() {
 
     if ! source_installer; then
         log "error" "Failed to install some dependencies from source"
-        exit 1
+        return 1
     fi
 
 
@@ -402,20 +415,21 @@ main() {
     local dot_base
     local dot_home
 
-    # By abusing the fact that the first two directories that are found are
-    # . & .. respectively we can just ignore the first two iterations of our
-    # loop in bash
-    local count
-    count=0
+    local exclusion_dirs
+    exclusion_dirs=(
+        ".."
+        "."
+        "install.bash"
+    )
     for dot_file in {,.}*; do
-        if (( count < 3 )); then
-            (( count++ ))
+        if [[ "${exclusion_dirs[*]}" =~ "${dot_file}" ]]; then
             continue
         fi
+
         dot_base="$(basename "${dot_file}")"
         dot_home="${HOME}/${dot_base}"
-        if [[ -f "${dot_home}" ]] || [[ -d "${dot_home}" ]]; then
-            log "info" "Found existing dot file: $(important "${dot_home}"), moving to $(important "${dot_home}/${dot_base}")"
+        if dir "${dot_home}" >/dev/null 2>&1; then
+            log "info" "Found existing dot file: $(important "${dot_home}"), moving to $(important "${OLD_DOT_FILES_BACKUP}/${dot_base}")"
             mv "${dot_home}" "${OLD_DOT_FILES_BACKUP}"
         fi
         log "info" "Installing dot file $(important "${dot_file}") to $(important "${dot_home}")"
