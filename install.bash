@@ -355,7 +355,7 @@ source_installer() {
         chmod u+x nvim.appimage
         ./nvim.appimage --appimage-extract
         if sudo -v >/dev/null 2>&1; then
-            rsync -a "squashfs-root/usr" "/usr"
+            rsync -a "./squashfs-root/usr" "/usr"
             rm -rf "squashfs-root"
         else
             log "info" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
