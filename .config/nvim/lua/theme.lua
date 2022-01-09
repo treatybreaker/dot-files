@@ -11,8 +11,7 @@ sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl
 ]]
 
 vim.g.tokyonight_style = "night" -- styles: storm, night and day.
-vim.g.onedark_style = "deep"     -- styles: dark, darker, cool, deep, warm and warmer.
-vim.g.enfocado_style = "nature"    -- styles: nature and neon.
-vim.g.neon_style = "dark"
-vim.g.material_style = "deep ocean"
+vim.g.tokyonight_transparent = true
+vim.g.tokyonight_transparent_sidebar = true
+
 vim.cmd("colorscheme tokyonight")

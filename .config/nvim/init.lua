@@ -1,6 +1,6 @@
 -- sourcing config files.
 require("packerstrap")
-require("settings")
 require("plugins")
+require("settings")
 require("maps")
 require("theme")

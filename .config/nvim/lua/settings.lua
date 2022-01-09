@@ -108,3 +108,8 @@ endif
 ]]
 
 vim.cmd("autocmd BufWritePost plugins.lua source <afile>")
+
+-- Symbols configuration
+g.symbols_outline = {
+    width = 50,
+}

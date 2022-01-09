@@ -131,9 +131,11 @@ return require("packer").startup({function()
     use {
         "nvim-telescope/telescope-fzf-native.nvim", run = "make",
     }
+
     use {
         "nvim-lua/popup.nvim",
     }
+
     use {
         "nvim-telescope/telescope-media-files.nvim",
     }
@@ -175,13 +177,34 @@ return require("packer").startup({function()
         end
     }
 
-
     use {
         "williamboman/nvim-lsp-installer",
         after = "nvim-lspconfig",
         config = function()
             require("../lsp")
         end
+    }
+
+    use {
+        "rmagatti/goto-preview",
+        requires = { "nvim-telescope/telescope.nvim" },
+        config = function()
+            require("goto-preview").setup({})
+        end
+    }
+    use {
+        "kosayoda/nvim-lightbulb",
+        module = "nvim-lightbulb"
+    }
+
+    use {
+        "weilbith/nvim-code-action-menu",
+        cmd = "CodeActionMenu"
+    }
+
+    use {
+        "simrat39/symbols-outline.nvim",
+        cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
     }
 
     use {
@@ -289,14 +312,14 @@ return require("packer").startup({function()
         }
     }
 
-    -- Scrollbar.
-    use {
-        "dstein64/nvim-scrollview",
-        event = "BufRead",
-        config = function()
-            require("plugins/nvim-scroll")
-        end
-    }
+    -- -- Scrollbar.
+    -- use {
+    --     "dstein64/nvim-scrollview",
+    --     event = "BufRead",
+    --     config = function()
+    --         require("plugins/nvim-scroll")
+    --     end
+    -- }
 
     -- Smooth scroll.
     use {
@@ -377,10 +400,16 @@ return require("packer").startup({function()
     -- Register support in telescope with persistent save
     use {
         "AckslD/nvim-neoclip.lua",
-        requires = {"tami5/sqlite.lua", module = "sqlite"},
+        requires = {
+            {"tami5/sqlite.lua", module = "sqlite"},
+            {"nvim-telescope/telescope.nvim"}
+        },
         config = function()
             require("neoclip").setup({
                 enable_persistant_history = true,
+                -- Until nightly is pushed to current stable (0.6.1)
+                -- this is unusable and has to be disabled
+                enable_macro_history = false
             })
         end,
     }
@@ -430,6 +459,49 @@ return require("packer").startup({function()
 
     }
 
+    use {
+        "kevinhwang91/nvim-hlslens",
+        module = "hlslens",
+        keys = "/",
+    }
+
+    use {
+        requires = { "kevinhwang91/nvim-hlslens" },
+        after ="nvim-hlslens",
+        "petertriho/nvim-scrollbar",
+        config = function()
+            local colors = require("tokyonight.colors").setup()
+            require("scrollbar").setup({
+                handle = {
+                    color = colors.bg_highlight,
+                },
+                marks = {
+                    Search = { color = colors.orange },
+                    Error = { color = colors.error },
+                    Warn = { color = colors.warning },
+                    Info = { color = colors.info },
+                    Hint = { color = colors.hint },
+                    Misc = { color = colors.purple },
+                },
+                handlers = {
+                    diagnostic = true,
+                    search = true
+                }
+            })
+        end
+    }
+    use {
+        "anuvyklack/pretty-fold.nvim",
+        config = function()
+            require("pretty-fold").setup{}
+            require("pretty-fold.preview").setup_keybinding()
+        end
+    }
+    use({
+        "catppuccin/nvim",
+        as = "catppuccin",
+    })
+
 
     -- Bootstrap packer if not installed, sync packages
     if packer_bootstrap then
@@ -440,7 +512,7 @@ end,
 config = {
     display = {
         open_fn = function()
-            return require("packer.util").float({ border = "single" })
+            return require("packer.util").float({ border = "double" })
         end
     }
 }}
