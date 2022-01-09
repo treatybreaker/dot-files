@@ -123,6 +123,15 @@ if type brew &>/dev/null; then
     compinit
 fi
 
+# Completions from .zsh directory
+if [[ -d "${HOME}/.zsh/completions" ]]; then
+    FPATH="${HOME}/.zsh/completions:${FPATH}"
+
+    autoload -Uz compinit
+    compinit
+fi
+
+
 ### Functions ###
 
 TCPDump-Capture() {
