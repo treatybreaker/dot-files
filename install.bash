@@ -387,10 +387,11 @@ main() {
         exit 1
     fi
 
-    log "info" "Installing $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git")"
 
     local dot_files_temp
     dot_files_temp="dot-files-$(date "+%s")"
+
+    log "info" "Installing $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_temp}")"
 
     mkdir -p "${OLD_DOT_FILES_BACKUP}"
 
