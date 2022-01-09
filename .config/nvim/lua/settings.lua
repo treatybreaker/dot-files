@@ -79,6 +79,13 @@ vim.g.tokyonight_transparent = true
 -- Add cursorline and diasable it in terminal
 vim.cmd("autocmd WinEnter,BufEnter * if &ft is \"toggleterm\" | set nocursorline | else | set cursorline | endif")
 
+-- Configure Better Folding
+opt.foldmethod="expr"
+opt.foldexpr="nvim_treesitter#foldexpr()"
+opt.foldtext="getline(v:foldstart).'...'.trim(getline(v:foldend))"
+opt.foldnestmax=3
+opt.foldminlines=1
+
 -- Set line number for help files.
 vim.cmd
 [[
