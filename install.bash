@@ -234,7 +234,7 @@ determine_os() {
             else
                 PKG_MANAGER="yum install -y"
             fi
-            SCRIPT_DEPENDENCIES+=(python39.x86_64 gcc-c++.x86_64) 
+            SCRIPT_DEPENDENCIES+=(python39.x86_64 gcc-c++.x86_64)
             ;;
         *ubuntu*)
             log "info" "Detected distribution as $(important "Ubuntu")"
@@ -353,7 +353,7 @@ source_installer() {
         nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
         curl -LO "${nvim_url}" --output nvim.appimage
         chmod u+x nvim.appimage
-        eval nvim.appimage --appimage-extract
+        ./nvim.appimage --appimage-extract
         if sudo -v >/dev/null 2>&1; then
             rsync -a "squashfs-root/usr" "/usr"
             rm -rf "squashfs-root"
