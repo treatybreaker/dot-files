@@ -44,7 +44,7 @@ fi
 # kitty-xterm which causes a fucking headache and a half due to ncurses not containing
 # that by default
 if [[ "${TERM}" = *"xterm-kitty"* ]]; then
-    alias ssh="TERM=xterm ssh"
+    alias ssh="TERM=xterm-256color ssh"
     __kitty_complete
 fi
 

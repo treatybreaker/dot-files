@@ -381,6 +381,7 @@ source_installer() {
 }
 
 main() {
+    cd "${HOME}"
     log "info" "Installing dependencies"
     if check_sudo; then
         log "info" "Sudo access found, installing dependencies"
