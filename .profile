@@ -23,7 +23,9 @@ setopt extendedglob
 ### Environment Variables ###
 
 export LANG=en_US.UTF-8
-export JAVA_HOME="$(/usr/libexec/java_home)"
+if [[ -f "/usr/libexec/java_home" ]]; then
+    export JAVA_HOME="$(/usr/libexec/java_home)"
+fi
 export AWS_CLI_AUTO_PROMPT=on
 export ZSH_HIGHLIGHT_MAXLENGTH=10000
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=2
