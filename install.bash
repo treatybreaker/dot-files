@@ -377,6 +377,9 @@ source_installer() {
         log "info" "Found a previous oh-my-zsh installation, backing up to $(important "${OLD_DOT_FILES_BACKUP}")"
         mv "${HOME}/.oh-my-zsh" "${OLD_DOT_FILES_BACKUP}"
     fi
+
+    # Set zsh to empty to handle pathing issues
+    export ZSH=""
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
