@@ -337,7 +337,7 @@ source_installer() {
     install_source_sudo "${cargo_bin}/bat"
 
     log "info" "Installing $(important "fzf") from git"
-    mv "${HOME}/.fzf" "${OLD_DOT_FILES_BACKUP}"
+    mv "${HOME}/.fzf" "${OLD_DOT_FILES_BACKUP}" 2>/dev/null
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     eval ~/.fzf/install --all
 
