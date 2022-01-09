@@ -41,7 +41,7 @@ SCRIPT_DEPENDENCIES=(
 GIT_REPOSITORY="https://gitlab.orion-technologies.io/philler/dot-files.git"
 PKG_MANAGER="${1}"
 
-OLD_DOT_FILES_BACKUP="dot-files-backup-$(date "+%s")"
+OLD_DOT_FILES_BACKUP="${HOME}/dot-files-backup-$(date "+%s")"
 
 ### Utilities ###
 # These functions assist with basic lookups and reused
