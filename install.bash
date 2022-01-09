@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Exit on error
-set -e
-set -o pipefail
+set -euo pipefail
 
 ### Information ###
 # This script deploys all dot files and installs all the following dependencies:
@@ -420,9 +419,6 @@ main() {
         ".gitignore"
         ".gitmodules"
     )
-
-    cd "${HOME}"
-
     for dot_file in {,.}*; do
         if [[ "${exclusion_dirs[*]}" =~ "${dot_file}" ]]; then
             continue
@@ -432,8 +428,7 @@ main() {
         dot_home="${HOME}/${dot_base}"
         if dir "${dot_home}" >/dev/null 2>&1; then
             log "info" "Found existing dot file: $(important "${dot_home}"), moving to $(important "${OLD_DOT_FILES_BACKUP}/${dot_base}")"
-
-            mv "${dot_base}" "${OLD_DOT_FILES_BACKUP}"
+            mv "${dot_home}" "${OLD_DOT_FILES_BACKUP}"
         fi
         log "info" "Installing dot file $(important "${dot_file}") to $(important "${dot_home}")"
         mv "${dot_file}" "${dot_home}"
