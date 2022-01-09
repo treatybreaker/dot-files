@@ -357,6 +357,7 @@ source_installer() {
         if sudo -v >/dev/null 2>&1; then
             sudo chown -R "root:root" "squashfs-root"
             sudo rsync -a "./squashfs-root/usr/" "/usr/"
+            sudo rm -rf "./squashfs-root/"
         else
             log "warning" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
         fi
