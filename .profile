@@ -90,9 +90,12 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 fi
 
 ## Python Aliases ##
-if which python3.10 >/dev/null 2>&1; then
-    alias python3="python3.10"
-fi
+for num in {12..1}; do
+    if which python3."${num}" >/dev/null 2>&1; then
+        alias python3="python3.10"
+        break
+    fi
+done
 
 ## Neovim Aliases ##
 if which nvim >/dev/null 2>&1; then
