@@ -418,6 +418,7 @@ main() {
         ".git"
         ".gitignore"
         ".gitmodules"
+        "README.md"
     )
     for dot_file in {,.}*; do
         if [[ "${exclusion_dirs[*]}" =~ "${dot_file}" ]]; then
