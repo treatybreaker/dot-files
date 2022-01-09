@@ -15,7 +15,6 @@ set -o pipefail
 #   - fzf
 #   - exa
 #   - neovim
-#   - autojump
 #
 # Additional dependencies per operating system:
 #   + MacOs (Darwin)
@@ -235,7 +234,7 @@ determine_os() {
             else
                 PKG_MANAGER="yum install -y"
             fi
-            SCRIPT_DEPENDENCIES+=(python39.x86_64 python2.x86_64 gcc-c++.x86_64)
+            SCRIPT_DEPENDENCIES+=(python39.x86_64 python2.x86_64 gcc-c++.x86_64 fuse.x86_64)
             ;;
         *ubuntu*)
             log "info" "Detected distribution as $(important "Ubuntu")"
@@ -354,23 +353,14 @@ source_installer() {
         nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
         curl -LO "${nvim_url}" --output nvim.appimage
         chmod u+x nvim.appimage
-        mv nvim.appimage nvim
-        install_source_sudo "$(pwd)/nvim" "/usr/local/bin/"
-        if [[ ! -f "/usr/local/bin/nvim" ]]; then
-            log "warning" \
-            "Could not install nvim to the path as sudo access could not be found\n
-                        nvim binary located at $(important "$(pwd)/nvim")"
+        eval nvim.appimage --appimage-extract
+        if sudo -v >/dev/null 2>&1; then
+            rsync -a "squashfs-root/usr" "/usr"
         else
-            rm -f nvim
+            log "info" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
         fi
     fi
 
-    local autojump_temp
-    autojump_temp="autojump-temp-$(date "+%s")"
-    log "info" "Installing $(important "autojump")"
-    git clone https://github.com/wting/autojump.git "${autojump_temp}" && cd "${autojump_temp}"
-    python3 install.py
-    cd .. && rm -rf "${autojump_temp}"
 
     log "info" "Installing $(important "oh-my-zsh")"
     if [[ -d "${HOME}/.oh-my-zsh/" ]]; then
