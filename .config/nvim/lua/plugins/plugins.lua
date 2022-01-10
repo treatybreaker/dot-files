@@ -146,7 +146,7 @@ return require("packer").startup({
 		-- Autopairs
 		use({
 			"windwp/nvim-autopairs",
-			after = "coq_nvim",
+			after = "nvim-cmp",
 			config = function()
 				require("nvim-autopairs").setup()
 			end,
@@ -163,6 +163,20 @@ return require("packer").startup({
 				"ms-jpq/coq.thirdparty",
 			},
 		})
+
+        use({
+            "hrsh7th/nvim-cmp",
+            requires = {
+                "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-buffer",
+                "hrsh7th/cmp-path",
+                "hrsh7th/cmp-cmdline",
+            },
+            config = function()
+                require("plugins.configs.cmp")
+            end
+        })
+
 
 		-- Show code outline
 		use({
@@ -337,10 +351,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Suggestions on : & /
-		use({
-			"gelguy/wilder.nvim",
-		})
 	end,
 	config = {
 		display = {
