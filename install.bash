@@ -323,55 +323,78 @@ source_installer() {
     local cargo_bin
     cargo_bin="${cargo_path}/bin/"
 
-    log "info" "Installing $(important "rust")"
-    bash <(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs) -y
-    source "${cargo_path}/env"
-
-    log "info" "Installing $(important "ripgrep") from cargo"
-    cargo install --locked ripgrep
-    install_source_sudo "${cargo_bin}/rg"
-
-    log "info" "Installing $(important "bat") from cargo"
-    cargo install --locked bat
-    install_source_sudo "${cargo_bin}/bat"
-
-    log "info" "Installing $(important "fzf") from git"
-    mv "${HOME}/.fzf" "${OLD_DOT_FILES_BACKUP}" 2>/dev/null
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    eval ~/.fzf/install --all
-
-    log "info" "Installing $(important "exa")"
-    cargo install --locked exa
-    install_source_sudo "${cargo_bin}/exa"
-
-    log "info" "Installing $(important "neovim")"
-    if [[ "${OSTYPE}" = *"darwin"* ]]; then
-        eval "${PKG_MANAGER} neovim"
+    if ! which rust >/dev/null 2>&1 && ! which cargo >/dev/null 2>&1; then
+        log "info" "Installing $(important "rust")"
+        bash <(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs) -y
+        source "${cargo_path}/env"
     else
-        local nvim_url
-        nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
-        curl -LO "${nvim_url}" --output nvim.appimage
-        chmod u+x nvim.appimage
-        ./nvim.appimage --appimage-extract
-        if sudo -v >/dev/null 2>&1; then
-            sudo chown -R "root:root" "squashfs-root"
-            sudo rsync -a "./squashfs-root/usr/" "/usr/"
-            sudo rm -rf "./squashfs-root/"
+        log "info" "$(important "rust") found, skipping"
+    fi
+
+    if ! which rg >/dev/null 2>&1; then
+        log "info" "Installing $(important "ripgrep") from cargo"
+        cargo install --locked ripgrep
+        install_source_sudo "${cargo_bin}/rg"
+    else
+        log "info" "$(important "Ripgrep") found, skipping"
+    fi
+
+    if ! which bat >/dev/null 2>&1; then
+        log "info" "Installing $(important "bat") from cargo"
+        cargo install --locked bat
+        install_source_sudo "${cargo_bin}/bat"
+    else
+        log "info" "$(important "Bat") found, skipping"
+    fi
+
+    if ! which fzf >/dev/null 2>&1; then
+        log "info" "Installing $(important "fzf") from git"
+        mv "${HOME}/.fzf" "${OLD_DOT_FILES_BACKUP}" 2>/dev/null
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        eval ~/.fzf/install --all
+    else
+        log "info" "$(important "Fzf") found, skipping"
+    fi
+
+    if ! which exa >/dev/null 2>&1; then
+        log "info" "Installing $(important "exa")"
+        cargo install --locked exa
+        install_source_sudo "${cargo_bin}/exa"
+    else
+        log "info" "$(important "Exa") found, skipping"
+    fi
+
+    if ! which nvim >/dev/null 2>&1; then
+        log "info" "Installing $(important "neovim")"
+        if [[ "${OSTYPE}" = *"darwin"* ]]; then
+            eval "${PKG_MANAGER} neovim"
         else
-            log "warning" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
+            local nvim_url
+            nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+            curl -LO "${nvim_url}" --output nvim.appimage
+            chmod u+x nvim.appimage
+            ./nvim.appimage --appimage-extract
+            if sudo -v >/dev/null 2>&1; then
+                sudo chown -R "root:root" "squashfs-root"
+                sudo rsync -a "./squashfs-root/usr/" "/usr/"
+                sudo rm -rf "./squashfs-root/"
+            else
+                log "warning" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
+            fi
         fi
+    else
+        log "info" "$(important "Neovim") found, skipping"
     fi
 
 
-    log "info" "Installing $(important "oh-my-zsh")"
-    if [[ -d "${HOME}/.oh-my-zsh/" ]]; then
-        log "info" "Found a previous oh-my-zsh installation, backing up to $(important "${OLD_DOT_FILES_BACKUP}")"
-        mv "${HOME}/.oh-my-zsh" "${OLD_DOT_FILES_BACKUP}"
+    if [[ ! -d "${HOME}/.oh-my-zsh/" ]]; then
+        log "info" "Installing $(important "oh-my-zsh")"
+        # Set zsh to empty to handle pathing issues
+        export ZSH=""
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    else
+        log "info" "$(important "Oh-My-Zsh") found, skipping"
     fi
-
-    # Set zsh to empty to handle pathing issues
-    export ZSH=""
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
 main() {
