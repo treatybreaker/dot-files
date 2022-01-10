@@ -407,9 +407,6 @@ return require("packer").startup({function()
         config = function()
             require("neoclip").setup({
                 enable_persistant_history = true,
-                -- Until nightly is pushed to current stable (0.6.1)
-                -- this is unusable and has to be disabled
-                enable_macro_history = false
             })
         end,
     }
