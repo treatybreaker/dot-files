@@ -1,15 +1,5 @@
 local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.on_server_ready(function(server)
-	local border = {
-		{ "🭽", "FloatBorder" },
-		{ "▔", "FloatBorder" },
-		{ "🭾", "FloatBorder" },
-		{ "▕", "FloatBorder" },
-		{ "🭿", "FloatBorder" },
-		{ "▁", "FloatBorder" },
-		{ "🭼", "FloatBorder" },
-		{ "▏", "FloatBorder" },
-	}
 	local handlers = {
 		["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
 		["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
@@ -43,7 +33,6 @@ lsp_installer.on_server_ready(function(server)
 			--     codelldb_path, liblldb_path)
 			-- },
 			tools = {
-
 				hover_actions = { auto_focus = true },
 			},
 		}

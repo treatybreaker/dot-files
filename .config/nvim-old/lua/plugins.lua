@@ -18,6 +18,9 @@ return require("packer").startup({
 	function()
 		use({ "wbthomason/packer.nvim" })
 
+        -- Performance boost on startup
+		use({ "lewis6991/impatient.nvim" })
+
 		-- Color schemes.
 		use({ "folke/tokyonight.nvim" })
 		use({ "bluz71/vim-nightfly-guicolors" })
@@ -510,9 +513,9 @@ return require("packer").startup({
 			as = "catppuccin",
 		})
 
-        use({
-            "neomake/neomake"
-        })
+		use({
+			"neomake/neomake",
+		})
 
 		-- Bootstrap packer if not installed, sync packages
 		if packer_bootstrap then
