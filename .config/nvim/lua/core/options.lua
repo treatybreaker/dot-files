@@ -59,8 +59,8 @@ M.setup = function()
     opt.foldmethod = "expr"
     opt.foldexpr = "nvim_treesitter#foldexpr()"
 	opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
-	opt.foldnestmax = 3
-	opt.foldminlines = 1
+	opt.foldnestmax = 10
+	opt.foldminlines = 0
 end
 
 return M

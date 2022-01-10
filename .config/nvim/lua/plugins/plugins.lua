@@ -211,13 +211,13 @@ return require("packer").startup({
 			cmd = "Neoformat",
 		})
 
-        use({
-            "anuvyklack/pretty-fold.nvim",
-            config = function()
-                require("pretty-fold").setup({})
-                require("pretty-fold.preview").setup_keybinding()
-            end
-        })
+		use({
+			"anuvyklack/pretty-fold.nvim",
+			config = function()
+				require("pretty-fold").setup({})
+				require("pretty-fold.preview").setup_keybinding()
+			end,
+		})
 
 		-- Stabalize closing buffers
 		use({
@@ -318,15 +318,28 @@ return require("packer").startup({
 
 		-- Lsp Diags on scrollbar
 		use({
+			"petertriho/nvim-scrollbar",
 			requires = {
 				"kevinhwang91/nvim-hlslens",
 				"folke/tokyonight.nvim",
 			},
 			after = "nvim-hlslens",
-			"petertriho/nvim-scrollbar",
 			config = function()
 				require("plugins.configs.diag-scrollbar")
 			end,
+		})
+
+		-- Preview diags on goto
+		use({
+			"rmagatti/goto-preview",
+			config = function()
+				require("goto-preview").setup({})
+			end,
+		})
+
+		-- Suggestions on : & /
+		use({
+			"gelguy/wilder.nvim",
 		})
 	end,
 	config = {
