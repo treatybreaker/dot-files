@@ -351,6 +351,14 @@ return require("packer").startup({
 			end,
 		})
 
+        -- Discord Rich Presence
+        use({
+            "andweeb/presence.nvim",
+            config = function()
+                require("presence"):setup({})
+            end
+        })
+
 	end,
 	config = {
 		display = {

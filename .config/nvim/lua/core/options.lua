@@ -45,19 +45,19 @@ M.setup = function()
 	-- Make new splits vertical
 	opt.splitright = true
 
-    -- Show line & column num of cursor
-    opt.ruler = true
+	-- Show line & column num of cursor
+	opt.ruler = true
 
-    -- Set timeouts
-    opt.ttimeoutlen = 20
-    opt.timeoutlen = 1000
+	-- Set timeouts
+	opt.ttimeoutlen = 20
+	opt.timeoutlen = 1000
 
-    -- Enable persistent undo
-    opt.undofile = true
+	-- Enable persistent undo
+	opt.undofile = true
 
-    -- Better folding
-    opt.foldmethod = "expr"
-    opt.foldexpr = "nvim_treesitter#foldexpr()"
+	-- Better folding
+	opt.foldmethod = "expr"
+	opt.foldexpr = "nvim_treesitter#foldexpr()"
 	opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
 	opt.foldnestmax = 10
 	opt.foldminlines = 0
