@@ -328,7 +328,7 @@ source_installer() {
         bash <(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs) -y
         source "${cargo_path}/env"
     else
-        log "info" "$(important "rust") found, skipping"
+        log "info" "$(important "Rust") found, skipping"
     fi
 
     if ! which rg >/dev/null 2>&1; then
