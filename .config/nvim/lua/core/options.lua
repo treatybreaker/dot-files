@@ -61,6 +61,7 @@ M.setup = function()
 	opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
 	opt.foldnestmax = 10
 	opt.foldminlines = 0
+    opt.foldlevel = 99
 end
 
 return M
