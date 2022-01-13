@@ -1,3 +1,3 @@
--- Anything that needs to be loaded FIRST
+-- Anything that needs to be loaded LAST
 -- needs to required here
 require("plugins.mappings")
