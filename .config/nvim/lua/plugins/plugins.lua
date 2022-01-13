@@ -9,7 +9,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 		"https://github.com/wbthomason/packer.nvim",
 		install_path,
 	})
-    -- Update the runtime so packer can be used
+	-- Update the runtime so packer can be used
 	vim.o.runtimepath = vim.fn.stdpath("data") .. "/site/pack/*/start/*," .. vim.o.runtimepath
 end
 
@@ -168,15 +168,19 @@ return require("packer").startup({
 		})
 
 		-- Completion Engine
+		-- use({
+		-- 	"ms-jpq/coq_nvim",
+		-- 	config = function()
+		-- 		require("plugins.configs.coq")
+		-- 	end,
+		-- 	requires = {
+		-- 		"ms-jpq/coq.artifacts",
+		-- 		"ms-jpq/coq.thirdparty",
+		-- 	},
+		-- })
 		use({
-			"ms-jpq/coq_nvim",
-			config = function()
-				require("plugins.configs.coq")
-			end,
-			requires = {
-				"ms-jpq/coq.artifacts",
-				"ms-jpq/coq.thirdparty",
-			},
+			"rafamadriz/friendly-snippets",
+			event = "InsertEnter",
 		})
 
 		use({
@@ -186,6 +190,8 @@ return require("packer").startup({
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
 				"hrsh7th/cmp-cmdline",
+				"onsails/lspkind-nvim",
+				"L3MON4D3/LuaSnip",
 			},
 			config = function()
 				require("plugins.configs.cmp")
@@ -376,6 +382,8 @@ return require("packer").startup({
 		-- Leave at end!!!
 		if packer_bootstrap then
 			require("packer").sync()
+			-- Source main so we get our setup loaded without restarting
+			require("main")
 		end
 	end,
 	config = {
