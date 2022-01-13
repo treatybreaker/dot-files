@@ -382,8 +382,6 @@ return require("packer").startup({
 		-- Leave at end!!!
 		if packer_bootstrap then
 			require("packer").sync()
-			-- Source core so we get our setup loaded without restarting
-			require("core.init")
 		end
 	end,
 	config = {
