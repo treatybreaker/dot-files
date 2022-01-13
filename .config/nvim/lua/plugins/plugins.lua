@@ -9,6 +9,8 @@ if fn.empty(fn.glob(install_path)) > 0 then
 		"https://github.com/wbthomason/packer.nvim",
 		install_path,
 	})
+    -- Update the runtime so packer can be used
+	vim.o.runtimepath = vim.fn.stdpath("data") .. "/site/pack/*/start/*," .. vim.o.runtimepath
 end
 
 return require("packer").startup({
@@ -371,7 +373,7 @@ return require("packer").startup({
 			end,
 		})
 
-        -- Leave at end!!!
+		-- Leave at end!!!
 		if packer_bootstrap then
 			require("packer").sync()
 		end
