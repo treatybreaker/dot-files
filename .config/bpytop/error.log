@@ -200,3 +200,22 @@ Traceback (most recent call last):
   File "/opt/homebrew/Cellar/python@3.10/3.10.1/Frameworks/Python.framework/Versions/3.10/lib/python3.10/subprocess.py", line 524, in run
     raise CalledProcessError(retcode, process.args,
 subprocess.CalledProcessError: Command 'coretemp' returned non-zero exit status 1.
+11/01/22 (04:00:18) | ERROR: Exception while getting cpu frequency!
+11/01/22 (04:00:18) | ERROR: [Errno 2] No such file or directory (originated from sysctlbyname('hw.cpufrequency'))
+Traceback (most recent call last):
+  File "/opt/homebrew/bin/bpytop", line 3080, in _collect
+    if CONFIG.show_cpu_freq and hasattr(psutil.cpu_freq(), "current"):
+  File "/opt/homebrew/Cellar/bpytop/1.0.68/libexec/lib/python3.10/site-packages/psutil/__init__.py", line 1859, in cpu_freq
+    ret = _psplatform.cpu_freq()
+  File "/opt/homebrew/Cellar/bpytop/1.0.68/libexec/lib/python3.10/site-packages/psutil/_psosx.py", line 180, in cpu_freq
+    curr, min_, max_ = cext.cpu_freq()
+FileNotFoundError: [Errno 2] No such file or directory (originated from sysctlbyname('hw.cpufrequency'))
+11/01/22 (04:00:18) | ERROR: Command 'coretemp' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/opt/homebrew/bin/bpytop", line 3208, in _collect_temps
+    cores = [max(0, int(x)) for x in subprocess.check_output("coretemp", universal_newlines=True).split()]
+  File "/opt/homebrew/Cellar/python@3.10/3.10.1/Frameworks/Python.framework/Versions/3.10/lib/python3.10/subprocess.py", line 420, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/opt/homebrew/Cellar/python@3.10/3.10.1/Frameworks/Python.framework/Versions/3.10/lib/python3.10/subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'coretemp' returned non-zero exit status 1.

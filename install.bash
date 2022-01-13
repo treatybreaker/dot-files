@@ -419,15 +419,20 @@ main() {
     fi
 
 
-    local dot_files_temp
-    dot_files_temp="dot-files-$(date "+%s")"
-
-    log "info" "Cloning $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_temp}")"
+    local dot_files_dir
+    dot_files_dir_name=".dot_files"
+    dot_files_dir="${HOME}/${dot_files_dir_name}"
 
     mkdir -p "${OLD_DOT_FILES_BACKUP}"
 
-    git clone --recurse-submodules "${GIT_REPOSITORY}" "${dot_files_temp}" && cd "${dot_files_temp}"
+    if [[ -d "${dot_files_dir}" ]]; then
+        log "info" "Found an existing $(important "dot files") directory at ${dot_files_dir}, backing it up to $(important "${OLD_DOT_FILES_BACKUP}/${dot_files_dir_name}")"
+        mv "${dot_files_dir}" "${OLD_DOT_FILES_BACKUP}"
+    fi
+    
+    log "info" "Cloning $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_dir}")"
 
+    git clone --recurse-submodules "${GIT_REPOSITORY}" "${dot_files_dir}" && cd "${dot_files_dir}"
     log "info" "Installing $(important "dot files")"
 
     local dot_base
@@ -454,14 +459,14 @@ main() {
             log "info" "Found existing dot file: $(important "${dot_home}"), moving to $(important "${OLD_DOT_FILES_BACKUP}/${dot_base}")"
             mv "${dot_home}" "${OLD_DOT_FILES_BACKUP}"
         fi
-        log "info" "Installing dot file $(important "${dot_file}") to $(important "${dot_home}")"
-        mv "${dot_file}" "${dot_home}"
+
+        log "info" "Softlinking $(important "${dot_file}") to $(important "${dot_home}")"
+        cd "${HOME}"
+        ln -s "${dot_files_dir}/${dot_file}" "${dot_home}"
+
     done
 
-    log "info" "Cleaning up..."
-    rm -rf "${dot_files_temp}"
-
-    log "info" "Finished, don't forget to change your shell to zsh: $(important "chsh -s zsh")"
+    log "info" "Finished installation, don't forget to change your shell to zsh: $(important "chsh -s /bin/zsh")"
 }
 
 main
