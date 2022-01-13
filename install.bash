@@ -447,6 +447,7 @@ main() {
         ".gitignore"
         ".gitmodules"
         "README.md"
+        ".gitlab-ci.yml"
     )
     for dot_file in {,.}*; do
         if [[ "${exclusion_dirs[*]}" =~ "${dot_file}" ]]; then
