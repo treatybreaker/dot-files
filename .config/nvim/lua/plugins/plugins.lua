@@ -1,3 +1,16 @@
+local fn = vim.fn
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+if fn.empty(fn.glob(install_path)) > 0 then
+	packer_bootstrap = fn.system({
+		"git",
+		"clone",
+		"--depth",
+		"1",
+		"https://github.com/wbthomason/packer.nvim",
+		install_path,
+	})
+end
+
 return require("packer").startup({
 	function(use)
 		use({ "wbthomason/packer.nvim" })
@@ -164,19 +177,18 @@ return require("packer").startup({
 			},
 		})
 
-        use({
-            "hrsh7th/nvim-cmp",
-            requires = {
-                "hrsh7th/cmp-nvim-lsp",
-                "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
-                "hrsh7th/cmp-cmdline",
-            },
-            config = function()
-                require("plugins.configs.cmp")
-            end
-        })
-
+		use({
+			"hrsh7th/nvim-cmp",
+			requires = {
+				"hrsh7th/cmp-nvim-lsp",
+				"hrsh7th/cmp-buffer",
+				"hrsh7th/cmp-path",
+				"hrsh7th/cmp-cmdline",
+			},
+			config = function()
+				require("plugins.configs.cmp")
+			end,
+		})
 
 		-- Show code outline
 		use({
@@ -351,14 +363,18 @@ return require("packer").startup({
 			end,
 		})
 
-        -- Discord Rich Presence
-        use({
-            "andweeb/presence.nvim",
-            config = function()
-                require("presence"):setup({})
-            end
-        })
+		-- Discord Rich Presence
+		use({
+			"andweeb/presence.nvim",
+			config = function()
+				require("presence"):setup({})
+			end,
+		})
 
+        -- Leave at end!!!
+		if packer_bootstrap then
+			require("packer").sync()
+		end
 	end,
 	config = {
 		display = {
