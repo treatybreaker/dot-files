@@ -43,6 +43,7 @@ nvim_tree.setup({
 		width = "15%",
 		side = "left",
 		auto_resize = true,
+        relativenumber = true,
 		mappings = {
 			list = {
 				{ key = "<C-h>", cb = require("nvim-tree.config").nvim_tree_callback("toggle_dotfiles") },

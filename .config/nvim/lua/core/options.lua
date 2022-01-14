@@ -62,6 +62,10 @@ M.setup = function()
 	opt.foldnestmax = 10
 	opt.foldminlines = 0
     opt.foldlevel = 99
+
+    -- Concealment for nicer rendering
+    opt.conceallevel = 2
+    opt.concealcursor = "ic"
 end
 
 return M

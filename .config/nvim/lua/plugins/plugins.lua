@@ -104,7 +104,7 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Telescope
+		-- Telescope Extensions
 		use({
 			"nvim-telescope/telescope-fzf-native.nvim",
 			run = "make",
@@ -112,21 +112,22 @@ return require("packer").startup({
 
 		use({
 			"nvim-telescope/telescope-media-files.nvim",
+			"nvim-telescope/telescope-file-browser.nvim",
+			"artart222/telescope_find_directories",
+		})
+		-- Telescope
+		use({
 			"nvim-telescope/telescope.nvim",
-
-			requires = {
-				{
-					"nvim-lua/plenary.lua",
-				},
-				{
-					"nvim-telescope/telescope-fzf-native.nvim",
-					opt = true,
-					run = "make",
-				},
-				{
-					"artart222/telescope_find_directories",
-				},
-			},
+			-- requires = {
+			-- 	{ "nvim-lua/plenary.lua" },
+			-- 	{ "artart222/telescope_find_directories" },
+			-- 	{ "nvim-telescope/telescope-file-browser.nvim" },
+			-- 	{
+			-- 		"nvim-telescope/telescope-fzf-native.nvim",
+			-- 		opt = true,
+			-- 		run = "make",
+			-- 	},
+			-- },
 			config = function()
 				require("plugins.configs.telescope-nvim")
 			end,
@@ -363,11 +364,11 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Preview diags on goto
+		-- Better in-line Lsp Diags
 		use({
-			"rmagatti/goto-preview",
+			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 			config = function()
-				require("goto-preview").setup({})
+				require("lsp_lines").register_lsp_virtual_lines()
 			end,
 		})
 
@@ -378,6 +379,19 @@ return require("packer").startup({
 				require("presence"):setup({})
 			end,
 		})
+        
+        -- Note Taking
+        use({
+            "nvim-neorg/neorg",
+            config = function()
+                require("plugins.configs._neorg")
+            end,
+            requires = {
+                "nvim-lua/plenary.nvim",
+                "nvim-neorg/neorg-telescope"
+            },
+            after = "nvim-treesitter"
+        })
 
 		-- Leave at end!!!
 		if packer_bootstrap then

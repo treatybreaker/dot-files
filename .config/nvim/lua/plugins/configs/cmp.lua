@@ -14,9 +14,9 @@ cmp.setup({
 
 	formatting = {
 		format = lspkind.cmp_format({
-            with_text = true,
-            maxwidth = 50
-        }),
+			with_text = true,
+			maxwidth = 50,
+		}),
 	},
 	mapping = {
 		["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
@@ -35,6 +35,7 @@ cmp.setup({
 		{ name = "luasnip" }, -- For luasnip users.
 		-- { name = 'ultisnips' }, -- For ultisnips users.
 		-- { name = 'snippy' }, -- For snippy users.
+        { name = "neorg" },
 	}, {
 		{ name = "buffer" },
 	}),

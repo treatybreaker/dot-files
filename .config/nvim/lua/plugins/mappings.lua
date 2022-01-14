@@ -14,9 +14,9 @@ map("n", "<Leader>td", ":Telescope find_directories<CR>")
 map("n", "<Leader>tb", ":Telescope buffers<CR>")
 map("n", "<Leader>th", ":Telescope help_tags<CR>")
 map("n", "<Leader>to", ":Telescope oldfiles<CR>")
-map("n", "<Leader>tt", ":Telescope treesitter<CR>")
 map("n", "<leader>tc", ":Telescope neoclip default<CR>")
 map("n", "<leader>tr", ":Telescope registers<CR>")
+map("n", "<leader>tt", ":Telescope file_browser<CR>")
 
 -- Lsp Mappings
 map("n", "<leader>lD", ":lua vim.lsp.buf.declaration()<CR>")
