@@ -5,9 +5,11 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${HOME}/zsh/.zcompcache"
 
 ### Fzf Tab Configuration ###
+zstyle ':fzf-tab:*' fzf-pad 80
+
 
 # Tab completion for CD/directory navigation
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -al --no-filesize --no-time --no-user --no-permissions $realpath'
+zstyle ':fzf-tab:complete:(cd|ls|exa):*' fzf-preview 'exa -al --no-filesize --no-time --no-user --no-permissions $realpath'
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -29,8 +31,8 @@ fi
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
 	fzf-preview 'echo ${(P)word}'
 
-# Tab Completion for previewing files or directories, SHOULD BE AT THE VERY BOTTOM
-zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu):*' fzf-preview \
+# Tab Completion for previewing files or directories
+zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim):*' fzf-preview \
   '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
 
 ### Generic Oh My Zsh Styles ###
@@ -40,11 +42,6 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # Better SSH/Rsync/SCP Autocomplete
 zstyle ':completion:*:ssh:*' config on
-
-# Allow for autocomplete to be case insensitive
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
-  '+l:|?=** r:|?=**'
-
 
 # Better SSH completions
 h=()
@@ -63,3 +60,21 @@ if [[ $#h -gt 0 ]]; then
   zstyle ':completion:*:slogin:*' hosts $h
 fi
 
+# Git Completions
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview \
+	'git diff $word | delta'
+zstyle ':fzf-tab:complete:git-log:*' fzf-preview \
+	'git log --color=always $word'
+zstyle ':fzf-tab:complete:git-help:*' fzf-preview \
+	'git help $word | bat -plman --color=always'
+zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
+	'case "$group" in
+	"commit tag") git show --color=always $word ;;
+	*) git show --color=always $word | delta ;;
+	esac'
+zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
+	'case "$group" in
+	"modified file") git diff $word | delta ;;
+	"recent commit object name") git show --color=always $word | delta ;;
+	*) git log --color=always $word ;;
+	esac'
