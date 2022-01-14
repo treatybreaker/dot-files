@@ -78,3 +78,8 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 	"recent commit object name") git show --color=always $word | delta ;;
 	*) git log --color=always $word ;;
 	esac'
+
+### Custom Function Completions ###
+# Completion for Note
+zstyle ':fzf-tab:complete:Note:*' fzf-preview \
+    '[[ -f "${realpath}" ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath}'

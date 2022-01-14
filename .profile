@@ -20,6 +20,7 @@ fi
 
 ### OPTS ###
 setopt extendedglob
+setopt nullglob
 
 ### Environment Variables ###
 
@@ -31,6 +32,7 @@ export AWS_CLI_AUTO_PROMPT=on
 export ZSH_HIGHLIGHT_MAXLENGTH=10000
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=2
 export LANG=en_US.UTF-8
+export NOTES_DIR="${HOME}/.notes"
 
 # Fzf Variables
 export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --info=inline --border --margin=1 --padding=1"
@@ -138,6 +140,30 @@ if [[ -d "${HOME}/.zsh/completions" ]]; then
 fi
 
 ### Functions ###
+Note() {
+    mkdir -p "${NOTES_DIR}"
+
+    local note_selection
+    note_selection="${NOTES_DIR}/${2}.norg"
+    case "${1}" in
+    --open | -o)
+        nvim "${note_selection}"
+        ;;
+    --delete | -d)
+        echo "${2}"
+        rm -f "${NOTES_DIR}/${2}.norg"
+        ;;
+    --list | -l)
+        for note in "${NOTES_DIR}/"*.norg; do
+            echo "${note}"
+        done
+        ;;
+    *)
+        Note "open" "${1}"
+        ;;
+    esac
+
+}
 
 TCPDump-Capture() {
     tcpdump -qns 0 -X -r "${1}"
