@@ -11,8 +11,9 @@ export PATH="${HOME}/.bin:${PATH}"
 export PATH="${PATH}:/opt/homebrew/Cellar/llvm/13.0.0_2/bin"
 
 # Mac pathing beneath
-if [[ "${OSTYPE}" = "darwn"* ]]; then
+if [[ "${OSTYPE}" = "darwin"* ]]; then
     export PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
+    export PATH="${HOME}/Library/Python/3.10/bin:${PATH}"
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
     export MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:${MANPATH}"
 fi
@@ -30,6 +31,9 @@ export AWS_CLI_AUTO_PROMPT=on
 export ZSH_HIGHLIGHT_MAXLENGTH=10000
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=2
 export LANG=en_US.UTF-8
+
+# Fzf Variables
+export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --info=inline --border --margin=1 --padding=1"
 
 if which nvim >/dev/null 2>&1; then
     export EDITOR=nvim
@@ -134,7 +138,6 @@ if [[ -d "${HOME}/.zsh/completions" ]]; then
     compinit
 fi
 
-
 ### Functions ###
 
 TCPDump-Capture() {
@@ -238,4 +241,16 @@ chr() {
 
 ord() {
     python3 -c "print(ord('${1}'))"
+}
+
+### FZF FUNCTIONS ###
+killer() {
+    (
+        date
+        ps -ef
+    ) |
+        fzf --bind='ctrl-r:reload(date; ps -ef)' \
+            --header=$'Press CTRL-R to reload\n\n' --header-lines=2 \
+            --preview='echo {}' --preview-window=down,3,wrap \
+            --layout=reverse --height=80% | awk '{print $2}' | xargs kill -9
 }
