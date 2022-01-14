@@ -113,7 +113,6 @@ if which bat >/dev/null 2>&1; then
 fi
 
 ## Misc Aliases ##
-alias btop="bpytop"
 alias ghidra="ghidraRun"
 alias v="vim"
 alias :q="exit"
