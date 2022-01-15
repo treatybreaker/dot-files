@@ -1,9 +1,6 @@
 local utils = require("utils.init")
 local map = utils.map
 
--- Filetree toggle
-map("n", "<leader>nt", ":NvimTreeToggle<CR>")
-
 -- Telescope mappings
 map("n", "<Leader>tw", ":Telescope live_grep<CR>")
 map("n", "<Leader>gs", ":Telescope git_status<CR>")
