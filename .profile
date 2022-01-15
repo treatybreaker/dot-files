@@ -143,11 +143,17 @@ fi
 Note() {
     mkdir -p "${NOTES_DIR}"
 
+    if [ -z "${1}" ]; then
+        echo "No note provided!" >&2
+        return 1
+    fi
+
     local note_selection
     note_selection="${NOTES_DIR}/${2}.norg"
     case "${1}" in
     --open | -o)
-        nvim "${note_selection}"
+        # nvim "${note_selection}"
+        echo "${note_selection}"
         ;;
     --delete | -d)
         echo "${2}"
@@ -159,7 +165,7 @@ Note() {
         done
         ;;
     *)
-        Note "open" "${1}"
+        Note "open" "${note_selection}"
         ;;
     esac
 
