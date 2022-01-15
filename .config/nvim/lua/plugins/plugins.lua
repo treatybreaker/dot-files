@@ -19,7 +19,7 @@ return require("packer").startup({
 		-- keep at top of plugins
 		use({ "lewis6991/impatient.nvim" })
 
-        -- Packer Itself
+		-- Packer Itself
 		use({ "wbthomason/packer.nvim" })
 
 		-- Commonly used library
@@ -50,9 +50,9 @@ return require("packer").startup({
 		use({
 			"nvim-lualine/lualine.nvim",
 			after = {
-                "nvim-bufferline.lua",
-                "tokyonight.nvim"
-            },
+				"nvim-bufferline.lua",
+				"tokyonight.nvim",
+			},
 			config = function()
 				require("plugins.configs.statusline")
 			end,
@@ -71,6 +71,7 @@ return require("packer").startup({
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
+			event = "BufRead",
 			config = function()
 				require("plugins.configs.treesitter")
 			end,
@@ -133,6 +134,7 @@ return require("packer").startup({
 		use({
 			"simrat39/rust-tools.nvim",
 			after = "nvim-lspconfig",
+			ft = "rust",
 			config = function()
 				require("rust-tools").setup({})
 			end,
@@ -154,12 +156,12 @@ return require("packer").startup({
 
 		use({
 			"hrsh7th/nvim-cmp",
-            even = "InsertEnter",
+			even = "InsertEnter",
 			requires = {
 				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
-                "hrsh7th/cmp-cmdline",
+				"hrsh7th/cmp-cmdline",
 				"onsails/lspkind-nvim",
 				"L3MON4D3/LuaSnip",
 			},
@@ -373,6 +375,6 @@ return require("packer").startup({
 				return require("packer.util").float({ border = "double" })
 			end,
 		},
-        compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua'
+		compile_path = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
 	},
 })

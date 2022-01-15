@@ -66,6 +66,9 @@ M.setup = function()
     -- Concealment for nicer rendering
     opt.conceallevel = 2
     opt.concealcursor = "ic"
+
+    -- Lazy Redraw to Speed Up Macros
+    opt.lazyredraw = true
 end
 
 return M
