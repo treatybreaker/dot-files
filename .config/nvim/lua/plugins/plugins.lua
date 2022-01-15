@@ -15,11 +15,12 @@ end
 
 return require("packer").startup({
 	function(use)
-		use({ "wbthomason/packer.nvim" })
-
 		-- Performance boost on startup
 		-- keep at top of plugins
 		use({ "lewis6991/impatient.nvim" })
+
+        -- Packer Itself
+		use({ "wbthomason/packer.nvim" })
 
 		-- Commonly used library
 		use({
@@ -62,7 +63,10 @@ return require("packer").startup({
 		-- Statusline.
 		use({
 			"nvim-lualine/lualine.nvim",
-			after = "nvim-bufferline.lua",
+			after = {
+                "nvim-bufferline.lua",
+                "tokyonight.nvim"
+            },
 			config = function()
 				require("plugins.configs.statusline")
 			end,
@@ -81,7 +85,6 @@ return require("packer").startup({
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
-			event = "BufEnter",
 			config = function()
 				require("plugins.configs.treesitter")
 			end,
@@ -118,16 +121,6 @@ return require("packer").startup({
 		-- Telescope
 		use({
 			"nvim-telescope/telescope.nvim",
-			-- requires = {
-			-- 	{ "nvim-lua/plenary.lua" },
-			-- 	{ "artart222/telescope_find_directories" },
-			-- 	{ "nvim-telescope/telescope-file-browser.nvim" },
-			-- 	{
-			-- 		"nvim-telescope/telescope-fzf-native.nvim",
-			-- 		opt = true,
-			-- 		run = "make",
-			-- 	},
-			-- },
 			config = function()
 				require("plugins.configs.telescope-nvim")
 			end,
@@ -168,17 +161,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Completion Engine
-		-- use({
-		-- 	"ms-jpq/coq_nvim",
-		-- 	config = function()
-		-- 		require("plugins.configs.coq")
-		-- 	end,
-		-- 	requires = {
-		-- 		"ms-jpq/coq.artifacts",
-		-- 		"ms-jpq/coq.thirdparty",
-		-- 	},
-		-- })
 		use({
 			"rafamadriz/friendly-snippets",
 			event = "InsertEnter",
@@ -186,11 +168,12 @@ return require("packer").startup({
 
 		use({
 			"hrsh7th/nvim-cmp",
+            even = "InsertEnter",
 			requires = {
 				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
-				"hrsh7th/cmp-cmdline",
+                "hrsh7th/cmp-cmdline",
 				"onsails/lspkind-nvim",
 				"L3MON4D3/LuaSnip",
 			},
@@ -393,11 +376,6 @@ return require("packer").startup({
 			after = "nvim-treesitter",
 		})
 
-		-- Completions for /, :, ?
-		use({
-			"gelguy/wilder.nvim",
-		})
-
 		-- Leave at end!!!
 		if packer_bootstrap then
 			require("packer").sync()
@@ -409,5 +387,6 @@ return require("packer").startup({
 				return require("packer.util").float({ border = "double" })
 			end,
 		},
+        compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua'
 	},
 })
