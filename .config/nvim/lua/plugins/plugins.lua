@@ -36,20 +36,6 @@ return require("packer").startup({
 			event = "BufEnter",
 		})
 
-		-- File Explorer Tree
-		use({
-			"kyazdani42/nvim-tree.lua",
-			cmd = {
-				"NvimTreeOpen",
-				"NvimTreeFocus",
-				"NvimTreeToggle",
-			},
-			requires = "kyazdani42/nvim-web-devicons",
-			config = function()
-				require("plugins.configs._nvim-tree")
-			end,
-		})
-
 		-- Tab Line at top of editor
 		use({
 			"akinsho/nvim-bufferline.lua",
