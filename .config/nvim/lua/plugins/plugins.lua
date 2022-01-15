@@ -379,19 +379,24 @@ return require("packer").startup({
 				require("presence"):setup({})
 			end,
 		})
-        
-        -- Note Taking
-        use({
-            "nvim-neorg/neorg",
-            config = function()
-                require("plugins.configs._neorg")
-            end,
-            requires = {
-                "nvim-lua/plenary.nvim",
-                "nvim-neorg/neorg-telescope"
-            },
-            after = "nvim-treesitter"
-        })
+
+		-- Note Taking
+		use({
+			"nvim-neorg/neorg",
+			config = function()
+				require("plugins.configs._neorg")
+			end,
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-neorg/neorg-telescope",
+			},
+			after = "nvim-treesitter",
+		})
+
+		-- Completions for /, :, ?
+		use({
+			"gelguy/wilder.nvim",
+		})
 
 		-- Leave at end!!!
 		if packer_bootstrap then
