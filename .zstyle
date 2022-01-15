@@ -5,7 +5,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${HOME}/zsh/.zcompcache"
 
 ### Fzf Tab Configuration ###
-zstyle ':fzf-tab:*' fzf-pad 80
+zstyle ':fzf-tab:*' fzf-pad 100
 
 
 # Tab completion for CD/directory navigation
@@ -32,7 +32,7 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 	fzf-preview 'echo ${(P)word}'
 
 # Tab Completion for previewing files or directories
-zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim):*' fzf-preview \
+zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|Note):*' fzf-preview \
   '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
 
 ### Generic Oh My Zsh Styles ###
@@ -79,7 +79,3 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 	*) git log --color=always $word ;;
 	esac'
 
-### Custom Function Completions ###
-# Completion for Note
-zstyle ':fzf-tab:complete:Note:*' fzf-preview \
-    '[[ -f "${realpath}" ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath}'
