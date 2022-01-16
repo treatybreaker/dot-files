@@ -32,7 +32,6 @@ set -eo pipefail
 ### CONSTANTS AND GLOBALS ###
 
 SCRIPT_DEPENDENCIES=(
-    zsh
     gcc
     git
     curl
