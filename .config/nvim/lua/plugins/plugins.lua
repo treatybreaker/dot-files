@@ -1,7 +1,10 @@
 local fn = vim.fn
+
+-- Packer strap, install packer automatically and configure plugins
+-- See the end of this file for how the variable `packer_strap` gets used
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-	packer_bootstrap = fn.system({
+	PACKER_STRAP = fn.system({
 		"git",
 		"clone",
 		"--depth",
@@ -373,20 +376,21 @@ return require("packer").startup({
 		})
 
 		-- Leave at end!!!
-		if packer_bootstrap then
+		-- Install and deploy packer plugins
+		-- automatically
+		if PACKER_STRAP then
 			vim.notify("Syncing packer from bootstrap")
 
 			function _G.NotifyRestartNeeded()
 				local notify_available, _ = require("notify")
 				local message = "Neovim Restart Required to Finish Installation!"
 				if notify_available then
-					vim.notify(
-                        message, vim.lsp.log_levels.WARN, 
-                        {
-                            title = "Packer Strap",
-                            keep = function() return true end
-                        }
-                    )
+					vim.notify(message, vim.lsp.log_levels.WARN, {
+						title = "Packer Strap",
+						keep = function()
+							return true
+						end,
+					})
 				else
 					vim.notify(message)
 				end
