@@ -2,9 +2,6 @@
 	name = Price Hiller
 	email = price@vircio.com
 
-[http "https://192.168.1.150/"]
-sslVerify=false
-
 [init]
 	defaultBranch = Development
     templateDir = ~/.git-global/template
@@ -26,7 +23,6 @@ sslVerify=false
 [delta]
     navigate = true
     features = decorations interactive
-	; side-by-side = true
 
 [delta "interactive"]
     keep-plus-minus-markers = false
@@ -46,5 +42,6 @@ sslVerify=false
     plus-emph-style = syntax "#003300"
     plus-style = syntax "#001a00"
     syntax-theme = Solarized (dark)
+
 [pull]
 	rebase = false
