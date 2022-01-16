@@ -27,6 +27,14 @@ return require("packer").startup({
 			"nvim-lua/plenary.nvim",
 		})
 
+        -- Nvim Notify
+        use({
+            "rcarriga/nvim-notify",
+            config = function()
+                require("plugins.configs.nvim-notify")
+            end
+        })
+
 		-- Color schemes
 		use({ "folke/tokyonight.nvim" })
 
@@ -129,6 +137,14 @@ return require("packer").startup({
 				require("plugins.configs.lsp")
 			end,
 		})
+
+        -- Lsp From Null LS
+        use({
+            "jose-elias-alvarez/null-ls.nvim",
+            config = function()
+                require("plugins.configs.null_ls")
+            end
+        })
 
 		-- Better LSP Handling for Rust
 		use({
@@ -364,8 +380,15 @@ return require("packer").startup({
 			after = "nvim-treesitter",
 		})
 
+
+
 		-- Leave at end!!!
 		if packer_bootstrap then
+            local available, notify = pcall(require, "notify")
+            
+            if available then
+                notify("Syncing packer from bootstrap")
+            end
 			require("packer").sync()
 		end
 	end,

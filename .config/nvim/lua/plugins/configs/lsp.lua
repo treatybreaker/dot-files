@@ -1,9 +1,24 @@
 local lsp_installer = require("nvim-lsp-installer")
+local async = require("plenary.async")
+
+local function on_attach(client, bufnr)
+        async.run(function()
+            vim.notify.async(
+                "Attached server " .. client.name,
+                "info",
+                {
+                    title = "lsp"
+                }
+            ).close()
+        end)
+    end
+
 lsp_installer.on_server_ready(function(server)
 	local opts = {
 		-- Coq configuration, ensure coq actual has capabilties shown
-        -- capabilities = require("coq").lsp_ensure_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+		-- capabilities = require("coq").lsp_ensure_capabilities(vim.lsp.protocol.make_client_capabilities()),
+		capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+        on_attach = on_attach,
 	}
 
 	-- In the scenario we're using rust it makes more sense to use rust-tools
@@ -46,6 +61,14 @@ lsp_installer.on_server_ready(function(server)
 					python = {
 						interpreterPath = "python3",
 					},
+				},
+			}
+		elseif server.name == "bashls" then
+			opts.settings = {
+				filetypes = {
+					"zsh",
+					"bash",
+					"profile",
 				},
 			}
 		end

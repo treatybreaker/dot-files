@@ -65,3 +65,6 @@ map("n", "<leader>ls", ":SymbolsOutline<CR>")
 map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>")
 map("n", "<Tab>", ":BufferLineCycleNext<CR>")
 map("n", "<leader>bc", ":lua require('utils.init').close_buffer()<CR>")
+
+-- Vim Notify Mappings
+map("n", "<leader>nv", ":lua require('telescope').extensions.notify.notify()<CR>")
