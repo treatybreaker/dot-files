@@ -65,3 +65,4 @@ map("n", "<A-]>", ":BufferLineCycleNext<CR>")
 
 -- Vim Notify Mappings
 map("n", "<leader>nv", ":lua require('telescope').extensions.notify.notify()<CR>")
+map("n", "<leader>nd", ":lua require('notify').dismiss()<CR>")
