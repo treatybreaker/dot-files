@@ -6,5 +6,5 @@ centos:
     stage: Centos Deployment
     script:
         - dnf install -y curl git zsh
-        - sudo su "${USER}"
+        - su "${USER}"
         - curl "https://gitlab.orion-technologies.io/philler/dot-files/-/raw/Development/install.bash" | bash
