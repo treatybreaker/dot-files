@@ -27,13 +27,13 @@ return require("packer").startup({
 			"nvim-lua/plenary.nvim",
 		})
 
-        -- Nvim Notify
-        use({
-            "rcarriga/nvim-notify",
-            config = function()
-                require("plugins.configs.nvim-notify")
-            end
-        })
+		-- Nvim Notify
+		use({
+			"rcarriga/nvim-notify",
+			config = function()
+				require("plugins.configs.nvim-notify")
+			end,
+		})
 
 		-- Color schemes
 		use({ "folke/tokyonight.nvim" })
@@ -138,13 +138,13 @@ return require("packer").startup({
 			end,
 		})
 
-        -- Lsp From Null LS
-        use({
-            "jose-elias-alvarez/null-ls.nvim",
-            config = function()
-                require("plugins.configs.null_ls")
-            end
-        })
+		-- Lsp From Null LS
+		use({
+			"jose-elias-alvarez/null-ls.nvim",
+			config = function()
+				require("plugins.configs.null_ls")
+			end,
+		})
 
 		-- Better LSP Handling for Rust
 		use({
@@ -372,15 +372,32 @@ return require("packer").startup({
 			after = "nvim-treesitter",
 		})
 
-
-
 		-- Leave at end!!!
 		if packer_bootstrap then
-            local available, notify = pcall(require, "notify")
-            
-            if available then
-                notify("Syncing packer from bootstrap")
-            end
+			vim.notify("Syncing packer from bootstrap")
+
+			function _G.NotifyRestartNeeded()
+				local notify_available, _ = require("notify")
+				local message = "Neovim Restart Required to Finish Installation!"
+				if notify_available then
+					vim.notify(
+                        message, vim.lsp.log_levels.WARN, 
+                        {
+                            title = "Packer Strap",
+                            keep = function() return true end
+                        }
+                    )
+				else
+					vim.notify(message)
+				end
+			end
+
+			vim.api.nvim_exec(
+				[[ 
+                autocmd User PackerCompileDone lua NotifyRestartNeeded() 
+            ]],
+				false
+			)
 			require("packer").sync()
 		end
 	end,
