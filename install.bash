@@ -233,7 +233,7 @@ determine_os() {
             else
                 PKG_MANAGER="yum install -y"
             fi
-            SCRIPT_DEPENDENCIES+=(python39.x86_64 gcc-c++.x86_64 sqlite.x86_64 sqlite-devel.x86_64)
+            SCRIPT_DEPENDENCIES+=(python39.x86_64 gcc-c++.x86_64 sqlite.x86_64 sqlite-devel.x86_64 gcc)
             ;;
         *ubuntu*)
             log "info" "Detected distribution as $(important "Ubuntu")"
