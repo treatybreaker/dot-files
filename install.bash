@@ -294,6 +294,7 @@ check_script_dependencies() {
     for dep in "${SCRIPT_DEPENDENCIES[@]}"; do
         if ! which "${dep}" >/dev/null 2>&1; then
             log "error" "Script dependency $(important "${dep}") could not be located, contact your local administrator to install this dependency"
+            return 1
         fi
     done
 }
