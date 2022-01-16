@@ -292,7 +292,7 @@ install_dependencies() {
 
 check_script_dependencies() {
     for dep in "${SCRIPT_DEPENDENCIES[@]}"; do
-        if ! which "${dep}" >/dev/null 2>&1; then
+        if ! which "${dep}" >/dev/null 2>&1 || [[ ! -f "/bin/${dep}" ]]; then
             log "error" "Script dependency $(important "${dep}") could not be located, contact your local administrator to install this dependency"
             return 1
         fi
