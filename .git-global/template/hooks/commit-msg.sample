@@ -1,0 +1,26 @@
+#!/bin/bash
+
+COMMIT_REGEX='\[\ .*\ \] - .*'
+read -r -d '' ERROR_MESSAGE << END_OF_VAR
+Aborting commit. Commit message did not match commit regex: \"${COMMIT_REGEX}"
+
+Template:
+    [ Modified Module/Feature ] - Short Message (required)
+
+Example Valid Commit Message:
+    [ Neovim ] - Updated Packer Lazy Loading for Treesitter for BufEnter Events
+END_OF_VAR
+
+COMMIT_MESSAGE="$(cat "${1}")"
+
+IFS=$'\n' read -ra COMMIT_MESSAGE_SPLIT -d $'\0' <<< "${COMMIT_MESSAGE}"
+
+if (( "${#COMMIT_MESSAGE_SPLIT[0]}" > 72 )); then
+    echo "Your first line commit is too long, max 72 characters, got ${#COMMIT_MESSAGE_SPLIT[0]}"
+    exit 1
+fi
+
+if [[ ! "$(cat "${1}")" =~ ${COMMIT_REGEX} ]]; then
+    echo "${ERROR_MESSAGE}" >&2
+    exit 1
+fi

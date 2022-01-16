@@ -1,0 +1,4 @@
+*.norg
+*.ignore
+*.exclude
+.DS_Store
