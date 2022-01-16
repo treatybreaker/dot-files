@@ -36,9 +36,6 @@ map("n", "<leader>lq", ":Telescope diagnostics bufnr=0<CR>")
 -- Formatter
 map("n", "<leader>fr", ":Neoformat<CR>")
 
--- Command Line
-map("n", "<CR>", "<cmd>FineCmdline<CR>")
-
 -- DAP Mappings
 map("n", "<leader>dR", ':lua require("dap").continue()<CR>')
 map("n", "<leader>de", ':lua require("dap").terminate()<CR>')

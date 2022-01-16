@@ -213,14 +213,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Floating Command Line
-		use({
-			"VonHeikemen/fine-cmdline.nvim",
-			requires = {
-				{ "MunifTanjim/nui.nvim" },
-			},
-		})
-
 		-- Easy align, better than piping out to !column -t
 		use({
 			"junegunn/vim-easy-align",
