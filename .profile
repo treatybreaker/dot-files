@@ -98,7 +98,7 @@ fi
 ## Python Aliases ##
 for num in {12..1}; do
     if which python3."${num}" >/dev/null 2>&1; then
-        alias python3="python3.10"
+        alias python3="python3.${num}"
         break
     fi
 done
