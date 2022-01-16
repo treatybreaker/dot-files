@@ -8,7 +8,7 @@ vim.g.tokyonight_transparent_sidebar = true
 local loaded, _ = pcall(vim.cmd, "colorscheme tokyonight")
 
 if not loaded then
-    error("Colorscheme could not be loaded likely due to a packerstrap install, restart neovim once packer is done...")
+    vim.notify("Colorscheme could not be loaded likely due to a packerstrap install, restart neovim once packer is done...")
 end
 
 end
