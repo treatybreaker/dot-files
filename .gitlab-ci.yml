@@ -4,7 +4,6 @@ stages:
 centos:
     image: centos:latest
     stage: Centos Deployment
-    before_script:
-        - dnf install -y curl git zsh
     script:
+        - dnf install -y curl git zsh
         - curl "https://gitlab.orion-technologies.io/philler/dot-files/-/raw/Development/install.bash" | bash
