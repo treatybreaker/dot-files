@@ -1,24 +1,44 @@
 local lsp_installer = require("nvim-lsp-installer")
 local async = require("plenary.async")
 
+local required_servers = {
+	"sumneko_lua",
+	"rust_analyzer",
+	"bashls",
+	"eslint",
+	"dockerls",
+	"yamlls",
+}
+
+for _, name in pairs(required_servers) do
+	local server_is_found, server = lsp_installer.get_server(name)
+	if server_is_found then
+		if not server:is_installed() then
+			async.run(function()
+				vim.notify.async("Installing Language Server " .. name, "info", {
+					title = "Lsp Installer",
+				}
+)
+			end)
+			server:install()
+		end
+	end
+end
+
 local function on_attach(client, bufnr)
-        async.run(function()
-            vim.notify.async(
-                "Attached server " .. client.name,
-                "info",
-                {
-                    title = "lsp"
-                }
-            ).close()
-        end)
-    end
+	async.run(function()
+		vim.notify.async("Attached server " .. client.name, "info", {
+			title = "Lsp Attach",
+		}).close()
+	end)
+end
 
 lsp_installer.on_server_ready(function(server)
 	local opts = {
 		-- Coq configuration, ensure coq actual has capabilties shown
 		-- capabilities = require("coq").lsp_ensure_capabilities(vim.lsp.protocol.make_client_capabilities()),
 		capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        on_attach = on_attach,
+		on_attach = on_attach,
 	}
 
 	-- In the scenario we're using rust it makes more sense to use rust-tools
