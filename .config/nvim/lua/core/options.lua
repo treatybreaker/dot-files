@@ -56,6 +56,7 @@ M.setup = function()
 	opt.timeoutlen = 1000
 
 	-- Enable persistent undo
+    opt.undodir = vim.fn.stdpath "cache" .. "/undo"
 	opt.undofile = true
 
 	-- Better folding
