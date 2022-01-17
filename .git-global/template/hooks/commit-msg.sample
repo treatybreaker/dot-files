@@ -5,10 +5,10 @@ read -r -d '' ERROR_MESSAGE << END_OF_VAR
 Aborting commit. Commit message did not match commit regex: \"${COMMIT_REGEX}"
 
 Template:
-    [ Modified Module/Feature ] - Short Message (required)
+    [ Modified Module/Feature ] Short Message (required)
 
 Example Valid Commit Message:
-    [ Neovim ] - Updated Packer Lazy Loading for Treesitter for BufEnter Events
+    [ Neovim ] Updated Packer Lazy Loading for Treesitter for BufEnter Events
 END_OF_VAR
 
 COMMIT_MESSAGE="$(cat "${1}")"
