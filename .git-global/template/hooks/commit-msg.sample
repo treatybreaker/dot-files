@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMMIT_REGEX='\[\ .*\ \] - .*'
+COMMIT_REGEX='\[\ .*\ \] .*'
 read -r -d '' ERROR_MESSAGE << END_OF_VAR
 Aborting commit. Commit message did not match commit regex: \"${COMMIT_REGEX}"
 
