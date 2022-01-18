@@ -176,26 +176,17 @@ return require("packer").startup({
 				"ms-jpq/coq.thirdparty",
 			},
 		})
-		-- 		use({
-		-- 			"rafamadriz/friendly-snippets",
-		-- 			event = "InsertEnter",
-		-- 		})
-		--
-		-- 		use({
-		-- 			"hrsh7th/nvim-cmp",
-		-- 			even = "InsertEnter",
-		-- 			requires = {
-		-- 				"hrsh7th/cmp-nvim-lsp",
-		-- 				"hrsh7th/cmp-buffer",
-		-- 				"hrsh7th/cmp-path",
-		-- 				"hrsh7th/cmp-cmdline",
-		-- 				"onsails/lspkind-nvim",
-		-- 				"L3MON4D3/LuaSnip",
-		-- 			},
-		-- 			config = function()
-		-- 				require("plugins.configs.cmp")
-		-- 			end,
-		-- 		})
+        -- Ghetto Way of Getting Fuzzy Finding for commands
+        use({
+            "hrsh7th/nvim-cmp",
+            even = "InsertEnter",
+            requires = {
+                "hrsh7th/cmp-cmdline",
+            },
+            config = function()
+                require("plugins.configs.cmp")
+            end,
+        })
 
 		-- Show code outline
 		use({
@@ -384,13 +375,13 @@ return require("packer").startup({
 		})
 
 		-- Completions for /, :, ?
-		use({
-			"gelguy/wilder.nvim",
-            event = "BufEnter",
-            config = function()
-                require("plugins.configs.wilder")
-            end
-		})
+		-- use({
+		-- 	"gelguy/wilder.nvim",
+		--             event = "BufEnter",
+		--             config = function()
+		--                 require("plugins.configs.wilder")
+		--             end
+		-- })
 
 		-- Leave at end!!!
 		-- Install and deploy packer plugins
