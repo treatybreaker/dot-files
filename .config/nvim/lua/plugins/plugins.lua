@@ -162,32 +162,40 @@ return require("packer").startup({
 		-- Autopairs
 		use({
 			"windwp/nvim-autopairs",
-			after = "nvim-cmp",
 			config = function()
 				require("nvim-autopairs").setup()
 			end,
 		})
-
 		use({
-			"rafamadriz/friendly-snippets",
-			event = "InsertEnter",
-		})
-
-		use({
-			"hrsh7th/nvim-cmp",
-			even = "InsertEnter",
-			requires = {
-				"hrsh7th/cmp-nvim-lsp",
-				"hrsh7th/cmp-buffer",
-				"hrsh7th/cmp-path",
-				"hrsh7th/cmp-cmdline",
-				"onsails/lspkind-nvim",
-				"L3MON4D3/LuaSnip",
-			},
+			"ms-jpq/coq_nvim",
 			config = function()
-				require("plugins.configs.cmp")
+				require("plugins.configs.coq")
 			end,
+			requires = {
+				"ms-jpq/coq.artifacts",
+				"ms-jpq/coq.thirdparty",
+			},
 		})
+		-- 		use({
+		-- 			"rafamadriz/friendly-snippets",
+		-- 			event = "InsertEnter",
+		-- 		})
+		--
+		-- 		use({
+		-- 			"hrsh7th/nvim-cmp",
+		-- 			even = "InsertEnter",
+		-- 			requires = {
+		-- 				"hrsh7th/cmp-nvim-lsp",
+		-- 				"hrsh7th/cmp-buffer",
+		-- 				"hrsh7th/cmp-path",
+		-- 				"hrsh7th/cmp-cmdline",
+		-- 				"onsails/lspkind-nvim",
+		-- 				"L3MON4D3/LuaSnip",
+		-- 			},
+		-- 			config = function()
+		-- 				require("plugins.configs.cmp")
+		-- 			end,
+		-- 		})
 
 		-- Show code outline
 		use({
@@ -373,6 +381,11 @@ return require("packer").startup({
 				"nvim-neorg/neorg-telescope",
 			},
 			after = "nvim-treesitter",
+		})
+
+		-- Completions for /, :, ?
+		use({
+			"gelguy/wilder.nvim",
 		})
 
 		-- Leave at end!!!
