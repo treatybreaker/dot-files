@@ -1,3 +1,4 @@
+vim.cmd([[
 call wilder#enable_cmdline_enter()
 set wildcharm=<Tab>
 cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
@@ -45,3 +46,4 @@ call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_bo
       \ 'reverse': 1,
       \ 'border': 'rounded',
       \ })))
+]])
