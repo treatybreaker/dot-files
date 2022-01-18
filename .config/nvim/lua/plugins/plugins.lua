@@ -386,6 +386,10 @@ return require("packer").startup({
 		-- Completions for /, :, ?
 		use({
 			"gelguy/wilder.nvim",
+            event = "WinEnter",
+            config = function()
+                require("plugins.configs.wilder")
+            end
 		})
 
 		-- Leave at end!!!
