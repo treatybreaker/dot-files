@@ -204,12 +204,12 @@ determine_os() {
     # if necessary.
 
     # Initial detection for MacOS
-    if [[ "${OSTYPE}" = "*darwin*" ]]; then
+    if [[ "${OSTYPE}" = *"darwin"* ]]; then
         log "info" "Detected distribution as $(important "MacOS")"
         PKG_MANAGER="brew install"
-        if ! which "${PKG_MANAGER}" >/dev/null 2>&1; then
-            log "info" "Installing homebrew for MacOS"
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        if ! which "brew" >/dev/null 2>&1; then
+            log "info" "Unable to find an installed package manager for MacOS, install HomeBrew to continue: https://docs.brew.sh/Installation"
+            exit 1
         fi
     else
         local etc_release
@@ -298,7 +298,7 @@ check_script_dependencies() {
     done
 }
 
-install_source_sudo() {
+install_source() {
     local program_path
     program_path="${1}"
 
@@ -308,11 +308,18 @@ install_source_sudo() {
     local install_dir
     install_dir="${2:-/usr/bin}"
 
+    local sudo_prefix
+    if [[ "${OSTYPE}" = *"darwin"* ]]; then
+        sudo_prefix=""
+    else
+        sudo_prefix="sudo "
+    fi
+
     if check_sudo; then
         log "info" "Sudo access detected, copying $(important "${program_name}") to $(important "${install_dir}/${program_name}")"
-        sudo cp "${program_path}" "${install_dir}"
-        sudo chown "root:root" "/${install_dir}/${program_name}"
-        sudo chmod 751 "/${install_dir}/${program_name}"
+        "${sudo_prefix}" cp "${program_path}" "${install_dir}"
+        "${sudo_prefix}" chown "root:root" "/${install_dir}/${program_name}"
+        "${sudo_prefix}" chmod 751 "/${install_dir}/${program_name}"
     fi
 }
 
@@ -386,7 +393,6 @@ source_installer() {
         log "info" "$(important "Neovim") found, skipping"
     fi
 
-
     if [[ ! -d "${HOME}/.oh-my-zsh/" ]]; then
         log "info" "Installing $(important "oh-my-zsh")"
         # Set zsh to empty to handle pathing issues
@@ -418,7 +424,6 @@ main() {
         return 1
     fi
 
-
     local dot_files_dir
     dot_files_dir_name=".dot_files"
     dot_files_dir="${HOME}/${dot_files_dir_name}"
@@ -429,7 +434,7 @@ main() {
         log "info" "Found an existing $(important "dot files") directory at ${dot_files_dir}, backing it up to $(important "${OLD_DOT_FILES_BACKUP}/${dot_files_dir_name}")"
         mv "${dot_files_dir}" "${OLD_DOT_FILES_BACKUP}"
     fi
-    
+
     log "info" "Cloning $(important "dot files") from $(important "https://gitlab.orion-technologies.io/philler/dot-files.git") to $(important "${dot_files_dir}")"
 
     git clone --recurse-submodules "${GIT_REPOSITORY}" "${dot_files_dir}" && cd "${dot_files_dir}"
@@ -456,13 +461,16 @@ main() {
 
         dot_base="$(basename "${dot_file}")"
         dot_home="${HOME}/${dot_base}"
-        if dir "${dot_home}" >/dev/null 2>&1; then
+        if [[ -e "${dot_home}" ]] || [[ -d "${dot_home}" ]]; then
             log "info" "Found existing dot file: $(important "${dot_home}"), moving to $(important "${OLD_DOT_FILES_BACKUP}/${dot_base}")"
             mv "${dot_home}" "${OLD_DOT_FILES_BACKUP}"
         fi
 
         log "info" "Softlinking $(important "${dot_file}") to $(important "${dot_home}")"
         cd "${HOME}"
+
+        # Hidden mv pass in case a soft link or some other bullshit gets caught up
+        mv "${dot_home}" "${OLD_DOT_FILES_BACKUP}" 2>/dev/null || true
         ln -s "${dot_files_dir}/${dot_file}" "${dot_home}"
 
     done
