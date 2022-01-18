@@ -287,9 +287,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Expands usage of % operator
-		use({ "andymass/vim-matchup" })
-
 		-- Move selections with alt+movement key
 		use({
 			"matze/vim-move",
