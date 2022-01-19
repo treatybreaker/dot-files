@@ -60,11 +60,11 @@ M.setup = function()
 	opt.undofile = true
 
 	-- Better folding
-	opt.foldmethod = "expr"
-	opt.foldexpr = "nvim_treesitter#foldexpr()"
-	opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
-	opt.foldnestmax = 10
-	opt.foldminlines = 0
+	opt.foldmethod = "indent"
+	-- opt.foldexpr = "nvim_treesitter#foldexpr()"
+	-- opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
+	-- opt.foldnestmax = 10
+	-- opt.foldminlines = 0
     opt.foldlevel = 99
 
     -- Concealment for nicer rendering

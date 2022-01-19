@@ -166,27 +166,41 @@ return require("packer").startup({
 				require("nvim-autopairs").setup()
 			end,
 		})
+
+
+		-- use({
+		-- 	"ms-jpq/coq_nvim",
+		-- 	config = function()
+		-- 		require("plugins.configs.coq")
+		-- 	end,
+		-- 	requires = {
+		-- 		"ms-jpq/coq.artifacts",
+		-- 		"ms-jpq/coq.thirdparty",
+		-- 	},
+		-- })
+
 		use({
-			"ms-jpq/coq_nvim",
-			config = function()
-				require("plugins.configs.coq")
-			end,
-			requires = {
-				"ms-jpq/coq.artifacts",
-				"ms-jpq/coq.thirdparty",
-			},
+			"rafamadriz/friendly-snippets",
+			event = "InsertEnter",
 		})
-        -- Ghetto Way of Getting Fuzzy Finding for commands
-        use({
-            "hrsh7th/nvim-cmp",
-            even = "InsertEnter",
-            requires = {
-                "hrsh7th/cmp-cmdline",
-            },
-            config = function()
-                require("plugins.configs.cmp")
-            end,
-        })
+
+		-- Code completion
+		use({
+			"hrsh7th/nvim-cmp",
+			even = "InsertEnter",
+			requires = {
+				"hrsh7th/cmp-nvim-lsp",
+				"hrsh7th/cmp-buffer",
+				"hrsh7th/cmp-path",
+				"hrsh7th/cmp-cmdline",
+				"L3MON4D3/LuaSnip",
+				"saadparwaiz1/cmp_luasnip",
+				-- "quangnguyen30192/cmp-nvim-ultisnips",
+			},
+			config = function()
+				require("plugins.configs.cmp")
+			end,
+		})
 
 		-- Show code outline
 		use({
