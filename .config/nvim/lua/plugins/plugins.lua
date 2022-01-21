@@ -141,6 +141,12 @@ return require("packer").startup({
 			end,
 		})
 
+		-- Code Action Menu, prettier ui for LSP code actions
+		require("packer").use({
+			"weilbith/nvim-code-action-menu",
+			cmd = "CodeActionMenu",
+		})
+
 		-- Lsp From Null LS
 		use({
 			"jose-elias-alvarez/null-ls.nvim",
@@ -192,14 +198,14 @@ return require("packer").startup({
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
 				"hrsh7th/cmp-cmdline",
-                "hrsh7th/cmp-emoji",
-                -- Snippets
+				"hrsh7th/cmp-emoji",
+				-- Snippets
 				"L3MON4D3/LuaSnip",
 				"saadparwaiz1/cmp_luasnip",
-                "SirVer/ultisnips",
-                "quangnguyen30192/cmp-nvim-ultisnips",
-                -- Better icons
-                "onsails/lspkind-nvim",
+				"SirVer/ultisnips",
+				"quangnguyen30192/cmp-nvim-ultisnips",
+				-- Better icons
+				"onsails/lspkind-nvim",
 			},
 			config = function()
 				require("plugins.configs._cmp")
