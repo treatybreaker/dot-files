@@ -24,7 +24,7 @@ curl "https://gitlab.orion-technologies.io/philler/dot-files/-/raw/Development/i
 ```bash
 git clone "https://gitlab.orion-technologies.io/philler/dot-files.git" ph-dot-files && cd ph-dot-files
 ```
-From here copy the files you'd like to have to your home directory ||${HOME}||. Recommend taking the ~/.config/
+From here copy the files you'd like to have to your home directory: `${HOME}`. Recommend taking the ~/.config/
 content first. Ensure you make backups 🙂.
 
 # Operating Systems Auto Installation
