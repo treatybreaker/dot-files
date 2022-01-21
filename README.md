@@ -1,5 +1,5 @@
 # Table of Contents
-[_TOC_]
+[[_TOC_]]
 
 # Automatic Install
 **NOTE**: Check [Operating System Statuses](#operating-systems-auto-installation) first!
