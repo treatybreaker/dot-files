@@ -1,4 +1,4 @@
-# Common recent settings file for Wireshark 3.4.9.
+# Common recent settings file for Wireshark 3.6.1.
 #
 # This file is regenerated each time Wireshark is quit
 # and when changing configuration profile.
@@ -31,8 +31,8 @@ recent.display_filter: udp.stream >= 32 && udp.stream <= 60 && ip.addr == 10.0.0
 
 # Main window geometry.
 # Decimal numbers.
-gui.geometry_main_x: 0
-gui.geometry_main_y: 0
+gui.geometry_main_x: 1025
+gui.geometry_main_y: 246
 gui.geometry_main_width: 1440
 gui.geometry_main_height: 900
 
@@ -83,15 +83,6 @@ gui.search_case_sensitive: FALSE
 # One of: DISPLAY_FILTER, HEX_VALUE, STRING, REGEX
 gui.search_type: DISPLAY_FILTER
 
-# Geometry and maximized state of PreferencesDialog window.
-# Decimal integers.
-gui.geom.PreferencesDialog.x: 158
-gui.geom.PreferencesDialog.y: 180
-gui.geom.PreferencesDialog.width: 1123
-gui.geom.PreferencesDialog.height: 483
-# TRUE or FALSE (case-insensitive).
-gui.geom.PreferencesDialog.maximized: FALSE
-
 # Geometry and maximized state of PacketDialog window.
 # Decimal integers.
 gui.geom.PacketDialog.x: 0
@@ -100,6 +91,15 @@ gui.geom.PacketDialog.width: 1440
 gui.geom.PacketDialog.height: 900
 # TRUE or FALSE (case-insensitive).
 gui.geom.PacketDialog.maximized: TRUE
+
+# Geometry and maximized state of PreferencesDialog window.
+# Decimal integers.
+gui.geom.PreferencesDialog.x: 158
+gui.geom.PreferencesDialog.y: 180
+gui.geom.PreferencesDialog.width: 1123
+gui.geom.PreferencesDialog.height: 483
+# TRUE or FALSE (case-insensitive).
+gui.geom.PreferencesDialog.maximized: FALSE
 
 # Geometry and maximized state of FollowStreamDialog window.
 # Decimal integers.
