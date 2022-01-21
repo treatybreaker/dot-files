@@ -34,9 +34,6 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|ls|cd|exa):*' fzf-preview \
   '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
 
-zstyle ':fzf-tab:complete:Note:*' fzf-preview \
-    'bat -P ~/.notes/${realpath}.norg'
-
 ### Generic Oh My Zsh Styles ###
 
 # Highlight the current autocomplete option
