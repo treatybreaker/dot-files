@@ -9,7 +9,6 @@ zstyle ':fzf-tab:*' fzf-pad 100
 
 
 # Tab completion for CD/directory navigation
-zstyle ':fzf-tab:complete:(cd|ls|exa):*' fzf-preview 'exa -al --no-filesize --no-time --no-user --no-permissions $realpath'
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -32,7 +31,7 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 	fzf-preview 'echo ${(P)word}'
 
 # Tab Completion for previewing files or directories
-zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|):*' fzf-preview \
+zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|ls|cd|exa):*' fzf-preview \
   '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
 
 zstyle ':fzf-tab:complete:Note:*' fzf-preview \
