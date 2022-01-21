@@ -32,8 +32,11 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 	fzf-preview 'echo ${(P)word}'
 
 # Tab Completion for previewing files or directories
-zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|Note):*' fzf-preview \
+zstyle ':fzf-tab:complete:(mv|cat|bat|cp|rm|chmod|du|viu|nvim|):*' fzf-preview \
   '[[ -f ${realpath} ]] && bat -P --color=always --theme="Solarized (dark)" --style=header,grid,numbers,snip ${realpath} || exa -al --no-filesize --no-time --no-user --no-permissions ${realpath}'
+
+zstyle ':fzf-tab:complete:Note:*' fzf-preview \
+    'bat -P ~/.notes/${realpath}.norg'
 
 ### Generic Oh My Zsh Styles ###
 
