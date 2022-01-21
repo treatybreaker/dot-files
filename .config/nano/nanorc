@@ -1,0 +1,51 @@
+## Nano Options ##
+
+# Maintains indentation level
+set autoindent
+
+# Adds line numbers to the side of the display
+#set linenumbers
+
+# Use spaces instead of tabs (FUCK TABS)
+set tabstospaces
+
+# Set the tabsize -- if tabtospaces is enabled this will define how many spaces to use
+set tabsize 2
+
+# Back Ups (This will create a clone of the file being edited suffixed with "~"
+set backup
+
+# Disable case sensitive searches -- makes ^w a bit more powerful
+unset casesensitive
+
+# Make ^right go to the end of words instead of beginning
+set afterends
+
+# Display Line Numbers
+set linenumbers
+
+## Nano Bindings ##
+
+# Rebinding copy for line
+unbind ^C main
+bind ^C copy main
+
+# Rebinding paste
+unbind ^V main
+bind ^V paste main
+
+# Rebinding undo
+unbind ^Z main
+bind ^Z undo main
+
+# Rebinding redo
+unbind ^R main
+bind ^R redo main
+
+# Binding for toggling the display of linenumbers
+bind ^l linenumbers main
+
+## Syntax Highlighting ##
+
+# Magic usage for syntax highlighting
+include ~/.config/nano/syntax/*.nanorc
