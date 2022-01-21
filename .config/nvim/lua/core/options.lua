@@ -68,7 +68,7 @@ M.setup = function()
     opt.foldlevel = 99
 
     -- Concealment for nicer rendering
-    opt.conceallevel = 2
+    opt.conceallevel = 0
     opt.concealcursor = "ic"
 
     -- Lazy Redraw to Speed Up Macros
