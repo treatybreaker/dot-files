@@ -74,7 +74,8 @@ fi
 
 ## Git Aliases ##
 if which git >/dev/null 2>&1; then
-    alias gc="git commit -m"
+    alias gc="git commit"
+    alias gcm="git commit -m"
     alias ga="git add"
     alias gp="git push"
     alias gb="git branch"
