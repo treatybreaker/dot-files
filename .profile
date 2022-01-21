@@ -144,31 +144,52 @@ Note() {
     mkdir -p "${NOTES_DIR}"
 
     if [ -z "${1}" ]; then
-        echo "No note provided!" >&2
+        printf "%s\n" "No note provided!" 1>&2
         return 1
     fi
 
     local note_selection
     note_selection="${NOTES_DIR}/${2}.norg"
-    case "${1}" in
-    --open | -o)
-        # nvim "${note_selection}"
-        echo "${note_selection}"
-        ;;
-    --delete | -d)
-        echo "${2}"
-        rm -f "${NOTES_DIR}/${2}.norg"
-        ;;
-    --list | -l)
-        for note in "${NOTES_DIR}/"*.norg; do
-            echo "${note}"
-        done
-        ;;
-    *)
-        Note "open" "${note_selection}"
-        ;;
-    esac
 
+    local note_bare
+    note_bare="${2}"
+
+    local selection
+    selection="${1}"
+
+    local option_selected
+    option_selected=1
+    while (( option_selected != 0 )); do
+        case "${selection}" in
+        --open | -o)
+            if [[ -z "${note_bare}" ]]; then
+                echo_rgb "No note selection provided!" 255 0 0 25 0 0
+                return 1
+            fi
+            nvim "${note_selection}"
+            option_selected=0
+            ;;
+        --delete | -d)
+            if [[ -z "${note_bare}" ]]; then
+                echo_rgb "No note selection provided!" 255 0 0 25 0 0
+                return 1
+            fi
+            rm -f "${note_selection}"
+            option_selected=0
+            ;;
+        --list | -l)
+            for note in "${NOTES_DIR}/"*.norg; do
+                echo_rgb "${note}" 64 143 255 11 22 36
+            done
+            option_selected=0
+            ;;
+        *)
+            selection="--open"
+            note_selection="${NOTES_DIR}/${1}.norg"
+            note_bare="${1}"
+            ;;
+        esac
+    done
 }
 
 TCPDump-Capture() {
@@ -245,25 +266,28 @@ echo_rgb() {
 
     for num in "${@:2}"; do
         [[ ! "${num}" =~ [0-9] ]] &&
-            echo "Given RGB value was not a number, received ${num}" >&2 &&
+            printf "%s\n" "Given RGB value was not a number, received ${num}" 1>&2 &&
             return 1
         [[ "${num}" -gt 255 ]] &&
-            echo "Given RGB value must be less than 255, received ${num}" >&2 &&
+            printf "%s\n" "Given RGB value must be less than 255, received ${num}" 1>&2 &&
             return 1
         [[ "${num}" -lt 0 ]] &&
-            echo "Given RGB value must be more than 0, received ${num}" &&
+            printf "%s\n" "Given RGB value must be more than 0, received ${num}" 1>&2 &&
             return 1
     done
 
-    if [ -n "${5}" ]; then
-        [[ -z "${6}" ]] && echo "A value must be passed for bg_green" && return 1
-        [[ -z "${7}" ]] && echo "A value must be passed for bg_blue" && return 1
-        printf "\033[38;2;%s;%s;%s;48;2;%s;%s;%sm%s\033[m\n" \
-            "${red}" "${green}" "${blue}" "${bg_red}" "${bg_green}" "${bg_blue}" "${input}"
+    if [ -t 1 ]; then
+        if [ -n "${5}" ]; then
+            [[ -z "${6}" ]] && echo "A value must be passed for bg_green" && return 1
+            [[ -z "${7}" ]] && echo "A value must be passed for bg_blue" && return 1
+            printf "\033[38;2;%s;%s;%s;48;2;%s;%s;%sm%s\033[m\n" \
+                "${red}" "${green}" "${blue}" "${bg_red}" "${bg_green}" "${bg_blue}" "${input}"
+        else
+            printf "\033[0;38;2;%s;%s;%sm%s\033[m\n" "${red}" "${green}" "${blue}" "${input}"
+        fi
     else
-        printf "\033[0;38;2;%s;%s;%sm%s\033[m\n" "${red}" "${green}" "${blue}" "${input}"
+        printf "%s\n" "${input}"
     fi
-    return 0
 }
 
 chr() {
