@@ -6,7 +6,7 @@
 
 This script will back up any files it intends to replace to a directory named `dot-files-backup-TIMESTAMP`.
 
-Requirements for this script to run:
+## Auto Install Requirements
 - Perms
     - sudo access
     - root
