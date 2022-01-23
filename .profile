@@ -82,6 +82,7 @@ if which git >/dev/null 2>&1; then
     alias gco="git checkout"
     alias gpl="git pull"
     alias gs="git status"
+    alias gsw="git switch"
     alias gd="git diff"
     alias gr="git remote"
     alias git-remote="git config --get remote.origin.url"
