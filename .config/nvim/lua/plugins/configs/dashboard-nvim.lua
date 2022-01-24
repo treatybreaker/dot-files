@@ -20,9 +20,6 @@ g.dashboard_custom_section = {
     b = { description = { "  Find directory            SPC t d" }, command = "Telescope find_directories" },
     c = { description = { "  Recents                   SPC t o" }, command = "Telescope oldfiles" },
     d = { description = { "  Find Word                 SPC t w" }, command = "Telescope live_grep" },
-    e = { description = { "洛 New File                  SPC f n" }, command = "DashboardNewFile" },
-    f = { description = { "  Bookmarks                 SPC b m" }, command = "Telescope marks" },
-    g = { description = { "  Load Last Session         SPC s l" }, command = "SessionLoad" }
 }
 
 g.dashboard_custom_footer = {
