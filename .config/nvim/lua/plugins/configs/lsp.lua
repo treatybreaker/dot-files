@@ -71,6 +71,7 @@ lsp_installer.on_server_ready(function(server)
 			opts.settings = {
 				ansible = {
 					ansible = {
+                        useFullyQualifiedCollectionNames = true,
 						path = "ansible",
 					},
 					ansibleLint = {
