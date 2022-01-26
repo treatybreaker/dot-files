@@ -215,10 +215,6 @@ return require("packer").startup({
 		-- DAP, debugger
 		use({
 			"mfussenegger/nvim-dap",
-			event = "BufRead",
-			config = function()
-				require("plugins.configs._dap")
-			end,
 		})
 
 		-- Allows more Dap providers to be installed easily
@@ -230,6 +226,7 @@ return require("packer").startup({
 		-- Python debugger, dapinstall does not play nice with debugpy
 		use({
 		    "mfussenegger/nvim-dap-python",
+            after = "nvim-dap",
 		    config = function()
 		        require("dap-python").setup("~/.venvs/debugpy/bin/python")
 		    end
@@ -238,9 +235,9 @@ return require("packer").startup({
 		-- Fancy ui for dap
 		use({
 			"rcarriga/nvim-dap-ui",
-			after = "DAPInstall.nvim",
+            after = "nvim-dap",
 			config = function()
-				require("dapui").setup({})
+                require("plugins.configs.dap-ui")
 			end,
 		})
 
