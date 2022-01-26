@@ -192,7 +192,6 @@ return require("packer").startup({
 		-- Code completion
 		use({
 			"hrsh7th/nvim-cmp",
-			even = "InsertEnter",
 			requires = {
 				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-buffer",
@@ -222,6 +221,9 @@ return require("packer").startup({
 		use({
 			"mfussenegger/nvim-dap",
 			event = "BufRead",
+			config = function()
+				require("plugins.configs._dap")
+			end,
 		})
 
 		-- Allows more Dap providers to be installed easily
@@ -230,12 +232,20 @@ return require("packer").startup({
 			after = "nvim-dap",
 		})
 
+		-- Python debugger, dapinstall does not play nice with debugpy
+		use({
+		    "mfussenegger/nvim-dap-python",
+		    config = function()
+		        require("dap-python").setup("~/.venvs/debugpy/bin/python")
+		    end
+		})
+
 		-- Fancy ui for dap
 		use({
 			"rcarriga/nvim-dap-ui",
 			after = "DAPInstall.nvim",
 			config = function()
-				require("plugins.configs.dap")
+				require("dapui").setup({})
 			end,
 		})
 
@@ -366,13 +376,13 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Better in-line Lsp Diags
-		use({
-			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-			config = function()
-				require("lsp_lines").register_lsp_virtual_lines()
-			end,
-		})
+		-- -- Better in-line Lsp Diags
+		-- use({
+		-- 	"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+		-- 	config = function()
+		-- 		require("lsp_lines").register_lsp_virtual_lines()
+		-- 	end,
+		-- })
 
 		-- Discord Rich Presence
 		use({

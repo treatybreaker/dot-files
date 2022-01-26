@@ -1,54 +1,55 @@
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
--- Better code icons
--- local cmp_kinds = {
--- 	Text = "  ",
--- 	Method = "  ",
--- 	Function = "  ",
--- 	Constructor = "  ",
--- 	Field = "  ",
--- 	Variable = "  ",
--- 	Class = "  ",
--- 	Interface = "  ",
--- 	Module = "  ",
--- 	Property = "  ",
--- 	Unit = "  ",
--- 	Value = "  ",
--- 	Enum = "  ",
--- 	Keyword = "  ",
--- 	Snippet = "  ",
--- 	Color = "  ",
--- 	File = "  ",
--- 	Reference = "  ",
--- 	Folder = "  ",
--- 	EnumMember = "  ",
--- 	Constant = "  ",
--- 	Struct = "  ",
--- 	Event = "  ",
--- 	Operator = "  ",
--- 	TypeParameter = "  ",
--- }
+local kind_icons = {
+	Text = "",
+	Method = "",
+	Function = "",
+	Constructor = "",
+	Field = "",
+	Variable = "",
+	Class = "ﴯ",
+	Interface = "",
+	Module = "",
+	Property = "ﰠ",
+	Unit = "",
+	Value = "",
+	Enum = "",
+	Keyword = "",
+	Snippet = "",
+	Color = "",
+	File = "",
+	Reference = "",
+	Folder = "",
+	EnumMember = "",
+	Constant = "",
+	Struct = "",
+	Event = "",
+	Operator = "",
+	TypeParameter = "",
+}
 
 cmp.setup({
 	formatting = {
-		format = lspkind.cmp_format({
-			with_text = true,
-			menu = {
+		format = function(entry, vim_item)
+			-- Kind icons
+			vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+			-- Source
+			vim_item.menu = ({
 				buffer = "[Buffer]",
 				nvim_lsp = "[LSP]",
 				luasnip = "[LuaSnip]",
 				nvim_lua = "[Lua]",
-				latex_symbols = "[Latex]",
-			},
-			preset = "codicons",
-		}),
+				latex_symbols = "[LaTeX]",
+			})[entry.source.name]
+			return vim_item
+		end,
 	},
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-			vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+			-- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
 		end,
 	},
 	mapping = {
@@ -66,7 +67,7 @@ cmp.setup({
 		-- Snippets
 		{
 			{ name = "luasnip" }, -- For luasnip users.
-			{ name = "ultisnips" },
+			-- { name = "ultisnips" },
 		},
 		{
 			{ name = "nvim_lsp" },
