@@ -49,15 +49,16 @@ lsp_installer.on_server_ready(function(server)
 		-- https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb
 		--
 		-- locate it with `find ~/ -name `
-		-- local extension_path =  "/Users/pricehiller/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/"
-		-- local codelldb_path = extension_path .. 'adapter/codelldb'
-		-- local liblldb_path = extension_path .. 'lldb/lib/liblldb.dylib'
+		local extension_path =  os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/"
+		local codelldb_path = extension_path .. 'adapter/codelldb'
+		local liblldb_path = extension_path .. 'lldb/lib/liblldb.dylib'
+
 		local rustopts = {
 			server = vim.tbl_deep_extend("force", server:get_default_options(), opts, {}),
-			-- dap = {
-			--     adapter = require('rust-tools.dap').get_codelldb_adapter(
-			--     codelldb_path, liblldb_path)
-			-- },
+			dap = {
+			    adapter = require('rust-tools.dap').get_codelldb_adapter(
+			    codelldb_path, liblldb_path)
+			},
 			tools = {
 				hover_actions = { auto_focus = true },
 			},
