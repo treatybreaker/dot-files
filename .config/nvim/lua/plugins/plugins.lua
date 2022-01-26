@@ -200,11 +200,6 @@ return require("packer").startup({
 				"hrsh7th/cmp-emoji",
 				-- Snippets
 				"L3MON4D3/LuaSnip",
-				"saadparwaiz1/cmp_luasnip",
-				"SirVer/ultisnips",
-				"quangnguyen30192/cmp-nvim-ultisnips",
-				-- Better icons
-				"onsails/lspkind-nvim",
 			},
 			config = function()
 				require("plugins.configs._cmp")
