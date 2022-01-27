@@ -59,8 +59,8 @@ map("v", "<leader>/", ":'<,'>CommentToggle<CR>")
 map("n", "<leader>ls", ":SymbolsOutline<CR>")
 
 -- Bufferline mappings
-map("n", "<A-[>", ":BufferLineCyclePrev<CR>")
-map("n", "<A-]>", ":BufferLineCycleNext<CR>")
+map("n", "<A-a>", ":BufferLineCyclePrev<CR>")
+map("n", "<A-s>", ":BufferLineCycleNext<CR>")
 map("n", "<A-x>", ":lua require('utils.init').close_buffer()<CR>")
 
 -- Vim Notify Mappings
