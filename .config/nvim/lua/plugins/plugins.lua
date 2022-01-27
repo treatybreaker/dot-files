@@ -368,13 +368,13 @@ return require("packer").startup({
 			end,
 		})
 
-		-- -- Better in-line Lsp Diags
-		-- use({
-		-- 	"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		-- 	config = function()
-		-- 		require("lsp_lines").register_lsp_virtual_lines()
-		-- 	end,
-		-- })
+		-- Better in-line Lsp Diags
+		use({
+			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+			config = function()
+				require("lsp_lines").register_lsp_virtual_lines()
+			end,
+		})
 
 		-- Discord Rich Presence
 		use({
