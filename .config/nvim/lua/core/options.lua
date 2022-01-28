@@ -62,7 +62,7 @@ M.setup = function()
 	opt.foldmethod = "expr"
 	opt.foldexpr = "nvim_treesitter#foldexpr()"
     opt.fillchars = { fold = " " }
-	opt.foldlevel = 99
+	opt.foldlevel = 20
 
 	-- Concealment for nicer rendering
 	opt.conceallevel = 0
