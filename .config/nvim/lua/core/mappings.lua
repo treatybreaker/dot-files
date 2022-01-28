@@ -8,6 +8,10 @@ M.setup = function()
 
 	-- Get rid of highlight after search
 	map("n", "<esc>", ":noh<CR>")
+
+    -- Spell Checking
+    map("n", "<leader>st",":set spell!<CR>")
+
 end
 
 return M

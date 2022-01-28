@@ -14,6 +14,7 @@ map("n", "<Leader>to", ":Telescope oldfiles<CR>")
 map("n", "<leader>tc", ":Telescope neoclip default<CR>")
 map("n", "<leader>tr", ":Telescope registers<CR>")
 map("n", "<leader>tt", ":Telescope file_browser<CR>")
+map("n", "<leader>ts", ":Telescope spell_suggest<CR>")
 
 -- Lsp Mappings
 map("n", "<leader>lD", ":lua vim.lsp.buf.declaration()<CR>")

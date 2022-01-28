@@ -225,19 +225,19 @@ return require("packer").startup({
 
 		-- Python debugger, dapinstall does not play nice with debugpy
 		use({
-		    "mfussenegger/nvim-dap-python",
-            after = "nvim-dap",
-		    config = function()
-		        require("dap-python").setup("~/.venvs/debugpy/bin/python")
-		    end
+			"mfussenegger/nvim-dap-python",
+			after = "nvim-dap",
+			config = function()
+				require("dap-python").setup("~/.venvs/debugpy/bin/python")
+			end,
 		})
 
 		-- Fancy ui for dap
 		use({
 			"rcarriga/nvim-dap-ui",
-            after = "nvim-dap",
+			after = "nvim-dap",
 			config = function()
-                require("plugins.configs.dap-ui")
+				require("plugins.configs.dap-ui")
 			end,
 		})
 
@@ -256,7 +256,9 @@ return require("packer").startup({
 		use({
 			"anuvyklack/pretty-fold.nvim",
 			config = function()
-				require("pretty-fold").setup({})
+				require("pretty-fold").setup({
+                    fill_char = " ",
+                })
 				require("pretty-fold.preview").setup_keybinding()
 			end,
 		})

@@ -1,4 +1,3 @@
-
 local opt = vim.opt
 local g = vim.g
 
@@ -18,7 +17,7 @@ M.setup = function()
 
 	-- Set truecolor support
 	opt.termguicolors = true
-    vim.cmd("highlight Normal guibg=none")
+	vim.cmd("highlight Normal guibg=none")
 
 	-- Enable system clipboard
 	opt.clipboard = "unnamedplus"
@@ -29,7 +28,7 @@ M.setup = function()
 	-- Allow hidden
 	opt.hidden = true
 
-	-- Useful defaults for tab, indentionation, etc.
+	-- Useful defaults for tab, indentation, etc.
 	opt.tabstop = 4
 	opt.shiftwidth = 4
 	opt.smartindent = true
@@ -56,23 +55,24 @@ M.setup = function()
 	opt.timeoutlen = 1000
 
 	-- Enable persistent undo
-    opt.undodir = vim.fn.stdpath "cache" .. "/undo"
+	opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 	opt.undofile = true
 
 	-- Better folding
-	opt.foldmethod = "indent"
-	-- opt.foldexpr = "nvim_treesitter#foldexpr()"
-	-- opt.foldtext = "getline(v:foldstart).'...'.trim(getline(v:foldend))"
-	-- opt.foldnestmax = 10
-	-- opt.foldminlines = 0
-    opt.foldlevel = 99
+	opt.foldmethod = "expr"
+	opt.foldexpr = "nvim_treesitter#foldexpr()"
+    opt.fillchars = { fold = " " }
+	opt.foldlevel = 99
 
-    -- Concealment for nicer rendering
-    opt.conceallevel = 0
-    opt.concealcursor = "ic"
+	-- Concealment for nicer rendering
+	opt.conceallevel = 0
+	opt.concealcursor = "ic"
 
-    -- Lazy Redraw to Speed Up Macros
-    opt.lazyredraw = true
+	-- Lazy Redraw to Speed Up Macros
+	opt.lazyredraw = true
+
+	-- Spell Settings
+	opt.spelllang = { "en_us" }
 end
 
 return M
