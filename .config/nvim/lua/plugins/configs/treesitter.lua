@@ -36,9 +36,6 @@ nvim_treesitter.setup({
 	matchup = {
 		enable = true,
 	},
-	-- indent = {
-	--   disable = { 'yaml' }
-	-- },
 	autotag = {
 		enable = true,
 	},

@@ -82,7 +82,7 @@ return require("packer").startup({
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
-			event = "BufRead",
+            event = "BufRead",
 			config = function()
 				require("plugins.configs.treesitter")
 			end,
@@ -396,7 +396,7 @@ return require("packer").startup({
 				"nvim-lua/plenary.nvim",
 				"nvim-neorg/neorg-telescope",
 			},
-			after = "nvim-treesitter",
+            after = "nvim-treesitter",
 		})
 
 		-- Completions for /, :, ?

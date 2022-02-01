@@ -4,6 +4,11 @@ neorg.setup({
     load = {
         ["core.defaults"] = {},
         ["core.norg.concealer"] = {},
+        ["core.norg.esupports.metagen"] = {
+          config = {
+              type = "auto",
+          }
+        },
         ["core.norg.completion"] = {
             config = {
                 engine = "nvim-cmp"
@@ -18,7 +23,7 @@ neorg.setup({
         ["core.norg.dirman"] = {
             config = {
                 workspaces = {
-                    my_workspace = "~/.neorg"
+                    default = "~/.neorg"
                 }
             }
         },
