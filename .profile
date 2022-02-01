@@ -143,6 +143,9 @@ fi
 
 ### Functions ###
 Note() {
+    local invoked_dir
+    invoked_dir="$(pwd)"
+
     mkdir -p "${NOTES_DIR}"
 
     if [ -z "${1}" ]; then
@@ -168,16 +171,28 @@ Note() {
                 echo_rgb "No note selection provided!" 255 0 0 25 0 0
                 return 1
             fi
+            cd "${NOTES_DIR}"
             nvim "${note_selection}"
+            cd "${invoked_dir}"
             option_selected=0
             ;;
         --delete | -d)
-            if [[ -z "${note_bare}" ]]; then
-                echo_rgb "No note selection provided!" 255 0 0 25 0 0
+            if [[ -z "${*:2}" ]]; then
+                echo_rgb "No note selection provided!" 255 0 0 25 0 0 1>&2
                 return 1
             fi
-            rm -f "${note_selection}"
+            local exit_code
+            exit_code=0
+            for note in "${@:2}"; do
+                note_selection="${NOTES_DIR}/${note}.norg"
+                if [[ ! -r "${note_selection}" ]]; then
+                    echo_rgb "Could not delete \"${note}\", does it exist?" 255 0 0 25 0 0 1>&2
+                    exit_code=1
+                fi
+                rm -f "${note_selection}"
+            done
             option_selected=0
+            return "${exit_code}"
             ;;
         --list | -l)
             for note in "${NOTES_DIR}/"*.norg; do

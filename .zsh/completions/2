@@ -15,10 +15,11 @@ _Note_command() {
     _arguments -S -s $args
 }
     
+echo "${words}"
 if (( ${#words} == 2 )); then
    _Note_command
 elif (( ${#words} == 3)); then
     _arguments "${file_name_comp}"
 elif (( ${#words} > 3 )) && [[ ${words[2]} = "--delete" || ${words[2]} = "-d" ]]; then
-    _arguments "${file_name_comp}"
+# 
 fi
