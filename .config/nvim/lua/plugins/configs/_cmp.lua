@@ -31,8 +31,8 @@ local kind_icons = {
 }
 
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 -- Load Snippets
@@ -66,7 +66,7 @@ cmp.setup({
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-            -- vim.fn["vsnip#anonymous"](args.body)
+			-- vim.fn["vsnip#anonymous"](args.body)
 		end,
 	},
 	mapping = {
@@ -105,7 +105,7 @@ cmp.setup({
 		-- Snippets
 		{
 			{ name = "luasnip" }, -- For luasnip users.
-            -- { name = "vsnip" },
+			-- { name = "vsnip" },
 		},
 		{
 			{ name = "nvim_lsp" },
@@ -113,7 +113,7 @@ cmp.setup({
 			{ name = "path" },
 			{ name = "buffer" },
 			{ name = "emoji" },
-            { name = "neorg" }
+			{ name = "neorg" },
 		}
 	),
 })
