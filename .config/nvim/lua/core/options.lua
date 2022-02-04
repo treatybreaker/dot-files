@@ -32,7 +32,7 @@ M.setup = function()
 	opt.tabstop = 4
 	opt.shiftwidth = 4
 	opt.smartindent = true
-	opt.smartcase = true
+    opt.breakindent = true
 	opt.expandtab = true
 	opt.smarttab = true
 
@@ -40,6 +40,7 @@ M.setup = function()
 	opt.hlsearch = true
 	opt.incsearch = true
 	opt.ignorecase = true
+	opt.smartcase = true
 
 	-- Better backspaces
 	opt.backspace = "indent,eol,start"
@@ -53,6 +54,8 @@ M.setup = function()
 	-- Set timeouts
 	opt.ttimeoutlen = 20
 	opt.timeoutlen = 1000
+    opt.updatetime = 250
+    opt.signcolumn = "yes"
 
 	-- Enable persistent undo
 	opt.undodir = vim.fn.stdpath("cache") .. "/undo"
@@ -73,6 +76,9 @@ M.setup = function()
 
 	-- Spell Settings
 	opt.spelllang = { "en_us" }
+
+    -- Better completion experience
+    opt.completeopt = "menuone,noselect"
 end
 
 return M

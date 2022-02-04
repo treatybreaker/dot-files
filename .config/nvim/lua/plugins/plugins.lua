@@ -82,7 +82,7 @@ return require("packer").startup({
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
-            event = "BufRead",
+			event = "BufRead",
 			config = function()
 				require("plugins.configs.treesitter")
 			end,
@@ -184,9 +184,21 @@ return require("packer").startup({
 		-- 	},
 		-- })
 
+		-- Snippets
+		use({
+			"L3MON4D3/LuaSnip",
+			"https://github.com/saadparwaiz1/cmp_luasnip",
+		})
 		use({
 			"rafamadriz/friendly-snippets",
-			event = "InsertEnter",
+			config = function()
+				require("luasnip.loaders.from_vscode").load()
+			end,
+			requires = {
+				"L3MON4D3/LuaSnip",
+				"https://github.com/saadparwaiz1/cmp_luasnip",
+			},
+            after = "LuaSnip"
 		})
 
 		-- Code completion
@@ -198,8 +210,7 @@ return require("packer").startup({
 				"hrsh7th/cmp-path",
 				"hrsh7th/cmp-cmdline",
 				"hrsh7th/cmp-emoji",
-				-- Snippets
-				"L3MON4D3/LuaSnip",
+				"hrsh7th/vim-vsnip",
 			},
 			config = function()
 				require("plugins.configs._cmp")
@@ -257,8 +268,8 @@ return require("packer").startup({
 			"anuvyklack/pretty-fold.nvim",
 			config = function()
 				require("pretty-fold").setup({
-                    fill_char = " ",
-                })
+					fill_char = " ",
+				})
 				require("pretty-fold.preview").setup_keybinding()
 			end,
 		})
@@ -345,6 +356,11 @@ return require("packer").startup({
 			"tpope/vim-surround",
 		})
 
+		-- Better Git integration on the command line
+		use({
+			"tpope/vim-fugitive",
+		})
+
 		-- Ansible Syntax Highlighting
 		use({
 			"pearofducks/ansible-vim",
@@ -371,12 +387,12 @@ return require("packer").startup({
 		})
 
 		-- Better in-line Lsp Diags
-		use({
-			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-			config = function()
-				require("lsp_lines").register_lsp_virtual_lines()
-			end,
-		})
+		-- use({
+		-- 	"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+		-- 	config = function()
+		-- 		require("lsp_lines").register_lsp_virtual_lines()
+		-- 	end,
+		-- })
 
 		-- Discord Rich Presence
 		use({
@@ -396,7 +412,7 @@ return require("packer").startup({
 				"nvim-lua/plenary.nvim",
 				"nvim-neorg/neorg-telescope",
 			},
-            after = "nvim-treesitter",
+			after = "nvim-treesitter",
 		})
 
 		-- Completions for /, :, ?

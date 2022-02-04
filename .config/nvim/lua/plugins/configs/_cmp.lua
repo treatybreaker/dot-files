@@ -1,5 +1,6 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+-- local vsnip = require("vsnip")
 
 local kind_icons = {
 	Text = "",
@@ -34,6 +35,9 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+-- Load Snippets
+require("luasnip.loaders.from_vscode").load()
+
 cmp.setup({
 	formatting = {
 		format = function(entry, vim_item)
@@ -62,7 +66,7 @@ cmp.setup({
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-			-- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+            -- vim.fn["vsnip#anonymous"](args.body)
 		end,
 	},
 	mapping = {
@@ -101,6 +105,7 @@ cmp.setup({
 		-- Snippets
 		{
 			{ name = "luasnip" }, -- For luasnip users.
+            -- { name = "vsnip" },
 		},
 		{
 			{ name = "nvim_lsp" },

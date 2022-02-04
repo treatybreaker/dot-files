@@ -29,9 +29,10 @@ map("n", "<leader>lT", ":lua vim.lsp.buf.type_definition()<CR>")
 map("n", "<leader>ln", ":lua vim.lsp.buf.rename()<CR>")
 map("n", "<leader>lc", ":CodeActionMenu<CR>")
 map("n", "<leader>lr", ":lua vim.lsp.buf.references()<CR>")
+map("n", "<leader>ls", ":lua vim.diagnostic.open_float(nil, {focus=false, scope='cursor'})<CR>")
 map("n", "<leader>lf", ":lua vim.lsp.buf.formatting()<CR>")
-map("n", "[", ":lua vim.diagnostic.goto_prev()<CR>")
-map("n", "]", ":lua vim.diagnostic.goto_next()<CR>")
+map("n", "<leader>[", ":lua vim.diagnostic.goto_prev()<CR>")
+map("n", "<leader>]", ":lua vim.diagnostic.goto_next()<CR>")
 map("n", "<leader>lq", ":Telescope diagnostics bufnr=0<CR>")
 
 -- Formatter
@@ -57,7 +58,7 @@ map("n", "<leader>/", ":CommentToggle<CR>")
 map("v", "<leader>/", ":'<,'>CommentToggle<CR>")
 
 -- Code Outline
-map("n", "<leader>ls", ":SymbolsOutline<CR>")
+map("n", "<leader>co", ":SymbolsOutline<CR>")
 
 -- Bufferline mappings
 map("n", "<A-a>", ":BufferLineCyclePrev<CR>")
