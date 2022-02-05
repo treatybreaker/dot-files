@@ -127,7 +127,6 @@ return require("packer").startup({
 		-- LSP, LSP Installer
 		use({
 			"neovim/nvim-lspconfig",
-			event = "BufEnter",
 			config = function()
 				require("plugins.configs.lspconfig")
 			end,
@@ -140,6 +139,15 @@ return require("packer").startup({
 				require("plugins.configs.lsp")
 			end,
 		})
+
+        -- Display LSP Progress
+        use({
+            "j-hui/fidget.nvim",
+            config = function()
+                require("plugins.configs.fidget-spinner")
+            end,
+            -- after = "nvim-lspconfig"
+        })
 
 		-- Code Action Menu, prettier ui for LSP code actions
 		require("packer").use({
@@ -414,6 +422,7 @@ return require("packer").startup({
 			},
 			after = "nvim-treesitter",
 		})
+
 
 		-- Completions for /, :, ?
 		-- use({
