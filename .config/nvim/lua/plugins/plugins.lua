@@ -166,8 +166,6 @@ return require("packer").startup({
 		-- Better LSP Handling for Rust
 		use({
 			"simrat39/rust-tools.nvim",
-			after = "nvim-lspconfig",
-			ft = "rust",
 			config = function()
 				require("rust-tools").setup({})
 			end,
