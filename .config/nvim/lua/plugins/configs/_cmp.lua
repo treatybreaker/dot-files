@@ -1,6 +1,5 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
--- local vsnip = require("vsnip")
 
 local kind_icons = {
 	Text = "",
@@ -66,7 +65,6 @@ cmp.setup({
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-			-- vim.fn["vsnip#anonymous"](args.body)
 		end,
 	},
 	mapping = {
@@ -104,16 +102,13 @@ cmp.setup({
 	sources = cmp.config.sources(
 		-- Snippets
 		{
-			{ name = "luasnip" }, -- For luasnip users.
-			-- { name = "vsnip" },
-		},
-		{
 			{ name = "nvim_lsp" },
 			{ name = "nvim_lua" },
 			{ name = "path" },
 			{ name = "buffer" },
 			{ name = "emoji" },
 			{ name = "neorg" },
+			{ name = "luasnip" }, -- For luasnip users.
 		}
 	),
 })
