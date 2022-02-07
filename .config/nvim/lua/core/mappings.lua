@@ -18,10 +18,6 @@ M.setup = function()
     map("n", "<C-k>", "<C-w>k")
     map("n", "<C-j>", "<C-w>j")
 
-    -- Better Split Opening
-    map("n", "<C-s>", "<C-w>s")
-    map("n", "<C-v>", "<C-w>v")
-
     -- Better split closing
     map("n", "<C-x>", "<C-w>c")
 

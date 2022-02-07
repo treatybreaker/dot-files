@@ -30,7 +30,7 @@ nvim_treesitter.setup({
 	ensure_installed = { "norg", "norg_meta", "norg_table"},
 	highlight = {
 		enable = true,
-		-- additional_vim_regex_highlighting = true,
+		additional_vim_regex_highlighting = true,
 		disable = { "yaml" },
 	},
 	matchup = {
@@ -40,6 +40,6 @@ nvim_treesitter.setup({
 		enable = true,
 	},
     indent = {
-        disable = { "yaml" },
+        disable = { "yaml" }
     }
 })

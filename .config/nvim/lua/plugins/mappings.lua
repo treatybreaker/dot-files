@@ -6,6 +6,7 @@ map("n", "<Leader>tw", ":Telescope live_grep<CR>")
 map("n", "<Leader>gs", ":Telescope git_status<CR>")
 map("n", "<Leader>gc", ":Telescope git_commits<CR>")
 map("n", "<Leader>gb", ":Telescope git_branches<CR>")
+map("n", "<leader>gw", ":lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 map("n", "<Leader>tf", ":Telescope find_files find_command=rg,--follow,--hidden,--files<CR>")
 map("n", "<Leader>td", ":Telescope find_directories<CR>")
 map("n", "<Leader>tb", ":Telescope buffers<CR>")
@@ -15,6 +16,7 @@ map("n", "<leader>tc", ":Telescope neoclip default<CR>")
 map("n", "<leader>tr", ":Telescope registers<CR>")
 map("n", "<leader>tt", ":Telescope file_browser<CR>")
 map("n", "<leader>ts", ":Telescope spell_suggest<CR>")
+
 
 -- Lsp Mappings
 map("n", "<leader>lD", ":lua vim.lsp.buf.declaration()<CR>")

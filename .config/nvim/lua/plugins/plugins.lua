@@ -82,7 +82,6 @@ return require("packer").startup({
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
-			event = "BufRead",
 			config = function()
 				require("plugins.configs.treesitter")
 			end,
@@ -116,6 +115,14 @@ return require("packer").startup({
 			"nvim-telescope/telescope-file-browser.nvim",
 			"artart222/telescope_find_directories",
 		})
+
+		use({
+			"ThePrimeagen/git-worktree.nvim",
+			config = function()
+				require("git-worktree").setup({})
+			end,
+		})
+
 		-- Telescope
 		use({
 			"nvim-telescope/telescope.nvim",
@@ -140,14 +147,14 @@ return require("packer").startup({
 			end,
 		})
 
-        -- Display LSP Progress
-        use({
-            "j-hui/fidget.nvim",
-            config = function()
-                require("plugins.configs.fidget-spinner")
-            end,
-            -- after = "nvim-lspconfig"
-        })
+		-- Display LSP Progress
+		use({
+			"j-hui/fidget.nvim",
+			config = function()
+				require("plugins.configs.fidget-spinner")
+			end,
+			-- after = "nvim-lspconfig"
+		})
 
 		-- Code Action Menu, prettier ui for LSP code actions
 		require("packer").use({
@@ -204,7 +211,7 @@ return require("packer").startup({
 				"L3MON4D3/LuaSnip",
 				"https://github.com/saadparwaiz1/cmp_luasnip",
 			},
-            after = "LuaSnip"
+			after = "LuaSnip",
 		})
 
 		-- Code completion
@@ -353,8 +360,10 @@ return require("packer").startup({
 		use({
 			"iamcco/markdown-preview.nvim",
 			run = "cd app && npm install",
+			setup = function()
+				vim.g.mkdp_filetypes = { "markdown" }
+			end,
 			ft = { "markdown" },
-			cmd = "MardownPreview",
 		})
 
 		-- Allows manipulation of surrounding characters
@@ -421,6 +430,15 @@ return require("packer").startup({
 			after = "nvim-treesitter",
 		})
 
+        -- Edit text region in browser with neovim (:GhostStart)
+        use({
+            "raghur/vim-ghost",
+            run = function()
+                vim.cmd[[
+                    ":GhostInstall"
+                ]]
+            end
+        })
 
 		-- Completions for /, :, ?
 		-- use({

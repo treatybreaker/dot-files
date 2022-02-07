@@ -79,6 +79,9 @@ M.setup = function()
 
     -- Better completion experience
     opt.completeopt = "menuone,noselect"
+
+    -- Set max text width
+    opt.textwidth = 120
 end
 
 return M
