@@ -13,6 +13,7 @@ export PATH="${PATH}:/opt/homebrew/Cellar/llvm/13.0.0_2/bin"
 # Mac pathing beneath
 if [[ "${OSTYPE}" = "darwin"* ]]; then
     export PATH="/opt/homebrew/opt/python@3.10/bin:${PATH}"
+    export PATH="/opt/homebrew/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
     export MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:${MANPATH}"
 fi
