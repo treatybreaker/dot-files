@@ -143,6 +143,20 @@ if [[ -d "${HOME}/.zsh/completions" ]]; then
 fi
 
 ### Functions ###
+del() {
+    local BASE_TRASH_DIR
+    BASE_TRASH_DIR="${HOME}/.Trash/"
+
+    local trash_del_dir
+    trash_del_dir="${BASE_TRASH_DIR}/del-$(date +%Y-%m-%dT%H:%M:%S)"
+
+    mkdir -p "${trash_del_dir}"
+
+    for i in "${@}"; do
+        mv "${i}" "${trash_del_dir}"
+    done
+}
+
 Note() {
     local invoked_dir
     invoked_dir="$(pwd)"
