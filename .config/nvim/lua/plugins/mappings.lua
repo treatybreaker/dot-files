@@ -70,3 +70,7 @@ map("n", "<A-x>", ":lua require('utils.init').close_buffer()<CR>")
 -- Vim Notify Mappings
 map("n", "<leader>nv", ":lua require('telescope').extensions.notify.notify()<CR>")
 map("n", "<leader>nd", ":lua require('notify').dismiss()<CR>")
+
+-- Whichkey Mappings
+map("n", "<leader>?", ":WhichKey<CR>")
+
