@@ -12,8 +12,7 @@ export PATH="${PATH}:/opt/homebrew/Cellar/llvm/13.0.0_2/bin"
 
 # Mac pathing beneath
 if [[ "${OSTYPE}" = "darwin"* ]]; then
-    export PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
-    export PATH="${HOME}/Library/Python/3.10/bin:${PATH}"
+    export PATH="/opt/homebrew/opt/python@3.10/bin:${PATH}"
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
     export MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:${MANPATH}"
 fi
@@ -85,6 +84,8 @@ if which git >/dev/null 2>&1; then
     alias gsw="git switch"
     alias gd="git diff"
     alias gr="git remote"
+    alias gl="git log"
+    alias gw="git worktree"
     alias git-remote="git config --get remote.origin.url"
 fi
 
@@ -164,7 +165,7 @@ Note() {
 
     local option_selected
     option_selected=1
-    while (( option_selected != 0 )); do
+    while ((option_selected != 0)); do
         case "${selection}" in
         --open | -o)
             if [[ -z "${note_bare}" ]]; then
