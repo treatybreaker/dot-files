@@ -1,3 +1,5 @@
 yarn/
 packer_compiled.*
 qBittorrent/
+./.config/qBittorrent/
+./.config/raycast/
