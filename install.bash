@@ -35,6 +35,7 @@ SCRIPT_DEPENDENCIES=(
     gcc
     git
     curl
+    sudo
 )
 
 GIT_REPOSITORY="https://gitlab.orion-technologies.io/philler/dot-files.git"
@@ -380,13 +381,17 @@ source_installer() {
             nvim_url="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
             curl -LO "${nvim_url}" --output nvim.appimage
             chmod u+x nvim.appimage
-            ./nvim.appimage --appimage-extract
-            if sudo -v >/dev/null 2>&1; then
-                sudo chown -R "root:root" "squashfs-root"
-                sudo rsync -a "./squashfs-root/usr/" "/usr/"
-                sudo rm -rf "./squashfs-root/"
+            ./nvim.appimage --appimage-extract >/dev/null 2>&1
+            if [[ "${?}" -eq 0 ]]; then
+                if sudo -v >/dev/null 2>&1; then
+                    sudo chown -R "root:root" "squashfs-root"
+                    sudo rsync -a "./squashfs-root/usr/" "/usr/"
+                    sudo rm -rf "./squashfs-root/"
+                else
+                    log "warning" "Unable to add $(important "neovim") to path from $(important "${squashfs-root}"), did not have sudo permissions"
+                fi
             else
-                log "warning" "Unable to add neovim to path from $(important "${squashfs-root}"), did not have sudo permissions"
+                log "error" "Unable to extract $(important "neovim") from appimage, is your system supported?"
             fi
         fi
     else
