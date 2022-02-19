@@ -239,6 +239,9 @@ return require("packer").startup({
 		-- DAP, debugger
 		use({
 			"mfussenegger/nvim-dap",
+			config = function()
+				require("dap.ext.vscode").load_launchjs()
+			end,
 		})
 
 		-- Allows more Dap providers to be installed easily
@@ -252,7 +255,7 @@ return require("packer").startup({
 			"mfussenegger/nvim-dap-python",
 			after = "nvim-dap",
 			config = function()
-				require("dap-python").setup("~/.venvs/debugpy/bin/python")
+				require("plugins.configs.python-dap")
 			end,
 		})
 
@@ -275,6 +278,9 @@ return require("packer").startup({
 		use({
 			"sbdchd/neoformat",
 			cmd = "Neoformat",
+            config = function()
+                require("plugins.configs.neoformat")
+            end
 		})
 
 		use({
@@ -430,15 +436,15 @@ return require("packer").startup({
 			after = "nvim-treesitter",
 		})
 
-        -- Edit text region in browser with neovim (:GhostStart)
-        use({
-            "raghur/vim-ghost",
-            run = function()
-                vim.cmd[[
+		-- Edit text region in browser with neovim (:GhostStart)
+		use({
+			"raghur/vim-ghost",
+			run = function()
+				vim.cmd([[
                     ":GhostInstall"
-                ]]
-            end
-        })
+                ]])
+			end,
+		})
 
 		-- Completions for /, :, ?
 		-- use({
