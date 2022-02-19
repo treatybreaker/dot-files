@@ -12,10 +12,12 @@ export PATH="${PATH}:/opt/homebrew/Cellar/llvm/13.0.0_2/bin"
 
 # Mac pathing beneath
 if [[ "${OSTYPE}" = "darwin"* ]]; then
-    export PATH="/opt/homebrew/opt/python@3.10/bin:${PATH}"
-    export PATH="/opt/homebrew/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
     export MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:${MANPATH}"
+
+    # Python with pyenv
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
 fi
 
 ### OPTS ###
@@ -23,7 +25,6 @@ setopt extendedglob
 setopt nullglob
 
 ### Environment Variables ###
-
 export LANG=en_US.UTF-8
 if [[ -f "/usr/libexec/java_home" ]]; then
     export JAVA_HOME="$(/usr/libexec/java_home)"
@@ -98,14 +99,6 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
     alias find="gfind"
     alias kill="gkill"
 fi
-
-## Python Aliases ##
-for num in {12..1}; do
-    if which python3."${num}" >/dev/null 2>&1; then
-        alias python3="python3.${num}"
-        break
-    fi
-done
 
 ## Neovim Aliases ##
 if which nvim >/dev/null 2>&1; then
